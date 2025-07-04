@@ -4,7 +4,7 @@ export default function UserList({ users = [], currentUserId }) {
   if (!users || users.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-neutral-500">No other users available to message.</p>
+        <p className="text-neutral-500">Mesaj gönderilebilecek başka kullanıcı yok.</p>
       </div>
     )
   }

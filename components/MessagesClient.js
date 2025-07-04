@@ -26,8 +26,8 @@ export default function MessagesClient({
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-neutral-900 mb-2">Messages</h1>
-            <p className="text-neutral-600">Connect with other users in our community</p>
+            <h1 className="text-3xl font-bold text-neutral-900 mb-2">Mesajlar</h1>
+            <p className="text-neutral-600">Topluluğumuzdaki diğer kullanıcılarla bağlantı kurun</p>
 
             {showSuccessMessage && (
               <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -35,9 +35,9 @@ export default function MessagesClient({
                   <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <p className="text-green-700 font-medium">Your message has been sent successfully!</p>
+                  <p className="text-green-700 font-medium">Mesajınız başarıyla gönderildi!</p>
                 </div>
-                <p className="text-green-600 text-sm mt-1">We'll respond to your inquiry as soon as possible.</p>
+                <p className="text-green-600 text-sm mt-1">Sorgunuza en kısa sürede yanıt vereceğiz.</p>
               </div>
             )}
           </div>
@@ -45,7 +45,7 @@ export default function MessagesClient({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-4">Start a Conversation</h2>
+                <h2 className="text-xl font-semibold mb-4">Sohbet Başlat</h2>
                 <UserList users={users} currentUserId={currentUser?.id} />
               </div>
             </div>
@@ -54,7 +54,7 @@ export default function MessagesClient({
               <div className="bg-white rounded-2xl shadow-md p-6">
                 {conversations && conversations.length > 0 ? (
                   <div>
-                    <h2 className="text-xl font-semibold mb-4">Recent Conversations</h2>
+                    <h2 className="text-xl font-semibold mb-4">Son Sohbetler</h2>
                     <div className="space-y-4">
                       {conversations.map((conversation) => (
                         <a
@@ -68,7 +68,7 @@ export default function MessagesClient({
                             <div>
                               <h3 className="font-semibold text-neutral-900">{conversation.otherUser.name}</h3>
                               <p className="text-sm text-neutral-600 truncate max-w-md">
-                                {conversation.senderId === currentUser.id ? "You: " : ""}
+                                {conversation.senderId === currentUser.id ? "Sen: " : ""}
                                 {conversation.content}
                               </p>
                             </div>
@@ -97,8 +97,8 @@ export default function MessagesClient({
                         />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-neutral-700 mb-2">No conversations yet</h3>
-                    <p className="text-neutral-500">Select a user from the list to start your first conversation.</p>
+                    <h3 className="text-xl font-semibold text-neutral-700 mb-2">Henüz sohbet yok</h3>
+                    <p className="text-neutral-500">İlk sohbetinizi başlatmak için listeden bir kullanıcı seçin.</p>
                   </div>
                 )}
               </div>

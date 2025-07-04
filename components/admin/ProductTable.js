@@ -10,7 +10,7 @@ export default function ProductTable({ products: initialProducts }) {
   const [loading, setLoading] = useState(false)
 
   const handleDeleteProduct = async (productId) => {
-    if (!confirm("Are you sure you want to delete this product?")) return
+    if (!confirm("Bu ürünü silmek istediğinizden emin misiniz?")) return
 
     setLoading(true)
     try {
@@ -63,16 +63,16 @@ export default function ProductTable({ products: initialProducts }) {
           <thead className="bg-neutral-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                Product
+                Ürün
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                Category
+                Kategori
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                Created
+                Oluşturulma
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                Actions
+                İşlemler
               </th>
             </tr>
           </thead>
@@ -110,14 +110,14 @@ export default function ProductTable({ products: initialProducts }) {
                     }}
                     className="text-primary-600 hover:text-primary-900"
                   >
-                    Edit
+                    Düzenle
                   </button>
                   <button
                     onClick={() => handleDeleteProduct(product.id)}
                     disabled={loading}
                     className="text-red-600 hover:text-red-900 disabled:opacity-50"
                   >
-                    Delete
+                    Sil
                   </button>
                 </td>
               </tr>

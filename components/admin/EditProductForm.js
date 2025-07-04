@@ -50,34 +50,34 @@ export default function EditProductForm({ product, categories }) {
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Product description is required"
+      newErrors.description = "Ürün açıklaması gereklidir"
     }
 
     if (!formData.image.trim()) {
-      newErrors.image = "Main product image is required"
+      newErrors.image = "Ana ürün resmi gereklidir"
     }
 
     if (!formData.categoryId) {
-      newErrors.categoryId = "Please select a category"
+      newErrors.categoryId = "Lütfen bir kategori seçin"
     }
 
     // Pricing validation
     const { currentPrice, oldPrice, discount } = pricingData
 
     if (currentPrice && (isNaN(currentPrice) || Number.parseFloat(currentPrice) < 0)) {
-      newErrors.currentPrice = "Please enter a valid current price"
+      newErrors.currentPrice = "Lütfen geçerli bir güncel fiyat girin"
     }
 
     if (oldPrice && (isNaN(oldPrice) || Number.parseFloat(oldPrice) < 0)) {
-      newErrors.oldPrice = "Please enter a valid old price"
+      newErrors.oldPrice = "Lütfen geçerli bir eski fiyat girin"
     }
 
     if (discount && (isNaN(discount) || Number.parseFloat(discount) < 0 || Number.parseFloat(discount) > 100)) {
-      newErrors.discount = "Discount must be between 0 and 100"
+      newErrors.discount = "İndirim 0 ile 100 arasında olmalıdır"
     }
 
     if (currentPrice && oldPrice && Number.parseFloat(currentPrice) > Number.parseFloat(oldPrice)) {
-      newErrors.currentPrice = "Current price cannot be higher than old price"
+      newErrors.currentPrice = "Güncel fiyat eski fiyattan yüksek olamaz"
     }
 
     setErrors(newErrors)
@@ -248,9 +248,9 @@ export default function EditProductForm({ product, categories }) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-8">
-          {/* Basic Information */}
+          {/* Temel Bilgiler */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Temel Bilgiler</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="lg:col-span-2">
                 <FormInput
@@ -465,7 +465,7 @@ export default function EditProductForm({ product, categories }) {
               className="px-6 py-3 bg-pink-600 text-white rounded-lg text-sm font-medium hover:bg-pink-700 focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {loading && <LoadingSpinner size="sm" />}
-              <span>{loading ? "Updating..." : "Update Product"}</span>
+              <span>{loading ? "Güncelleniyor..." : "Ürünü Güncelle"}</span>
             </button>
             <button
               type="button"
@@ -473,7 +473,7 @@ export default function EditProductForm({ product, categories }) {
               className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               disabled={loading}
             >
-              Cancel
+              İptal
             </button>
             <a
               href={`/products/${product.id}`}

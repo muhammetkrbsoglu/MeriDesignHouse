@@ -10,15 +10,15 @@ export default function ProductFilter({ onFilterChange }) {
   })
 
   const categories = [
-    { value: "all", label: "All Categories" },
-    { value: "wedding-favors", label: "Wedding Favors" },
-    { value: "candles", label: "Candles" },
-    { value: "keychains", label: "Keychains" },
-    { value: "gift-sets", label: "Gift Sets" },
+    { value: "all", label: "Tüm Kategoriler" },
+    { value: "wedding-favors", label: "Düğün Hediyelikleri" },
+    { value: "candles", label: "Mumlar" },
+    { value: "keychains", label: "Anahtarlıklar" },
+    { value: "gift-sets", label: "Hediye Setleri" },
   ]
 
   const priceRanges = [
-    { value: "all", label: "All Prices" },
+    { value: "all", label: "Tüm Fiyatlar" },
     { value: "0-25", label: "₺0 - ₺25" },
     { value: "25-50", label: "₺25 - ₺50" },
     { value: "50-75", label: "₺50 - ₺75" },
@@ -26,10 +26,10 @@ export default function ProductFilter({ onFilterChange }) {
   ]
 
   const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "popular", label: "Most Popular" },
+    { value: "newest", label: "En Yeniler" },
+    { value: "price-low", label: "Fiyat: Düşükten Yükseğe" },
+    { value: "price-high", label: "Fiyat: Yüksekten Düşüğe" },
+    { value: "popular", label: "En Popüler" },
   ]
 
   const handleFilterChange = (key, value) => {
@@ -40,12 +40,12 @@ export default function ProductFilter({ onFilterChange }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Filter Products</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Ürünleri Filtrele</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Category Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
           <select
             value={filters.category}
             onChange={(e) => handleFilterChange("category", e.target.value)}
@@ -61,7 +61,7 @@ export default function ProductFilter({ onFilterChange }) {
 
         {/* Price Range Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Fiyat Aralığı</label>
           <select
             value={filters.priceRange}
             onChange={(e) => handleFilterChange("priceRange", e.target.value)}
@@ -77,7 +77,7 @@ export default function ProductFilter({ onFilterChange }) {
 
         {/* Sort Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Sırala</label>
           <select
             value={filters.sortBy}
             onChange={(e) => handleFilterChange("sortBy", e.target.value)}

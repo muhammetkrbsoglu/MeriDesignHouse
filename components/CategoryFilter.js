@@ -29,7 +29,7 @@ export default function CategoryFilter({ categories, selectedCategory }) {
               : "bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200"
           }`}
         >
-          All Products
+          Tüm Ürünler
         </button>
         {categories.map((category) => (
           <button

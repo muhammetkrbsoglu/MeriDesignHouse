@@ -71,8 +71,8 @@ export default function UserManagement() {
       }
 
       toast({
-        title: "Success",
-        description: data.message || "User role updated successfully",
+        title: "Başarılı",
+        description: data.message || "Kullanıcı rolü başarıyla güncellendi",
       })
 
       // Refresh users list
@@ -90,7 +90,7 @@ export default function UserManagement() {
   }
 
   const handleDeleteUser = async (userId) => {
-    if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+    if (!confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.")) {
       return
     }
 
@@ -108,8 +108,8 @@ export default function UserManagement() {
       }
 
       toast({
-        title: "Success",
-        description: "User deleted successfully",
+        title: "Başarılı",
+        description: "Kullanıcı başarıyla silindi",
       })
 
       // Refresh users list
@@ -155,7 +155,7 @@ export default function UserManagement() {
     if (user.email) {
       return user.email.split("@")[0]
     }
-    return "Unknown User"
+    return "Bilinmeyen Kullanıcı"
   }
 
   return (
@@ -164,7 +164,7 @@ export default function UserManagement() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Toplam Kullanıcı</CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -174,7 +174,7 @@ export default function UserManagement() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Admin Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Admin Kullanıcıları</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -184,7 +184,7 @@ export default function UserManagement() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Regular Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Normal Kullanıcılar</CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -194,7 +194,7 @@ export default function UserManagement() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">This Page</CardTitle>
+            <CardTitle className="text-sm font-medium">Bu Sayfa</CardTitle>
             <RefreshCw className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -208,14 +208,14 @@ export default function UserManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            Users ({pagination.total || 0})
+            Kullanıcılar ({pagination.total || 0})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <Input
-                placeholder="Search users by name or email..."
+                placeholder="Kullanıcıları isim veya e-posta ile ara..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full"
@@ -223,28 +223,28 @@ export default function UserManagement() {
             </div>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder="Role göre filtrele" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
+                <SelectItem value="all">Tüm Roller</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="user">User</SelectItem>
+                <SelectItem value="user">Kullanıcı</SelectItem>
               </SelectContent>
             </Select>
             <Button onClick={fetchUsers} variant="outline">
               <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              Yenile
             </Button>
           </div>
 
           {/* Users Table */}
           <div className="space-y-4">
             <div className="hidden md:grid md:grid-cols-6 gap-4 font-medium text-sm text-muted-foreground border-b pb-2">
-              <div className="col-span-2">USER</div>
-              <div className="text-center">ROLE</div>
-              <div className="text-center">MESSAGES</div>
-              <div className="text-center">JOINED</div>
-              <div className="text-right">ACTIONS</div>
+              <div className="col-span-2">KULLANICI</div>
+              <div className="text-center">ROL</div>
+              <div className="text-center">MESAJLAR</div>
+              <div className="text-center">KATILIM</div>
+              <div className="text-right">İŞLEMLER</div>
             </div>
 
             {loading ? (
@@ -262,7 +262,7 @@ export default function UserManagement() {
             ) : users.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <UserPlus className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No users found</p>
+                <p>Kullanıcı bulunamadı</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -282,7 +282,7 @@ export default function UserManagement() {
                         </div>
                         <div className="text-sm text-gray-500 truncate leading-tight">{user.email}</div>
                         <div className="text-xs text-gray-400 mt-1 md:hidden">
-                          Joined {formatDate(user.joinedAt)}
+                          Katıldı {formatDate(user.joinedAt)}
                         </div>
                       </div>
                     </div>
@@ -307,7 +307,7 @@ export default function UserManagement() {
                     {/* Messages Column */}
                     <div className="text-sm text-gray-600 md:text-center">
                       <span className="font-medium">{user.messageCount || 0}</span>
-                      <span className="text-gray-400 ml-1 md:hidden">messages</span>
+                      <span className="text-gray-400 ml-1 md:hidden">mesaj</span>
                     </div>
 
                     {/* Joined Date Column - Only visible on desktop */}
@@ -330,7 +330,7 @@ export default function UserManagement() {
                           ) : (
                             <>
                               <ShieldOff className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Demote</span>
+                              <span className="hidden sm:inline">Düşür</span>
                             </>
                           )}
                         </Button>
@@ -347,7 +347,7 @@ export default function UserManagement() {
                           ) : (
                             <>
                               <Shield className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Promote</span>
+                              <span className="hidden sm:inline">Yükselt</span>
                             </>
                           )}
                         </Button>
@@ -376,14 +376,14 @@ export default function UserManagement() {
             {pagination.pages > 1 && (
               <div className="flex items-center justify-between pt-6 border-t">
                 <div className="text-sm text-muted-foreground">
-                  Showing {(page - 1) * 10 + 1} to {Math.min(page * 10, pagination.total)} of {pagination.total} users
+                  Gösterilen {(page - 1) * 10 + 1} - {Math.min(page * 10, pagination.total)} / {pagination.total} kullanıcı
                 </div>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" onClick={() => setPage(page - 1)} disabled={page <= 1}>
-                    Previous
+                    Önceki
                   </Button>
                   <span className="text-sm px-2">
-                    Page {page} of {pagination.pages}
+                    Sayfa {page} / {pagination.pages}
                   </span>
                   <Button
                     variant="outline"
@@ -391,7 +391,7 @@ export default function UserManagement() {
                     onClick={() => setPage(page + 1)}
                     disabled={page >= pagination.pages}
                   >
-                    Next
+                    Sonraki
                   </Button>
                 </div>
               </div>

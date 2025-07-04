@@ -79,14 +79,14 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
     const active = []
 
     if (filters.query) {
-      active.push({ key: "query", label: `Search: "${filters.query}"`, value: filters.query })
+      active.push({ key: "query", label: `Arama: "${filters.query}"`, value: filters.query })
     }
 
     if (filters.category) {
       const category = categories.find((c) => c.id === filters.category)
       active.push({
         key: "category",
-        label: `Category: ${category?.name || filters.category}`,
+        label: `Kategori: ${category?.name || filters.category}`,
         value: filters.category,
       })
     }
@@ -94,10 +94,10 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
     if (filters.minPrice || filters.maxPrice) {
       const priceLabel =
         filters.minPrice && filters.maxPrice
-          ? `Price: ₺${filters.minPrice} - ₺${filters.maxPrice}`
+          ? `Fiyat: ₺${filters.minPrice} - ₺${filters.maxPrice}`
           : filters.minPrice
-            ? `Price: ₺${filters.minPrice}+`
-            : `Price: up to ₺${filters.maxPrice}`
+            ? `Fiyat: ₺${filters.minPrice}+`
+            : `Fiyat: ₺${filters.maxPrice}'a kadar`
       active.push({ key: "price", label: priceLabel, value: "price" })
     }
 
@@ -105,12 +105,12 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
   }
 
   const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "name-asc", label: "Name: A to Z" },
-    { value: "name-desc", label: "Name: Z to A" },
+    { value: "newest", label: "En Yeni" },
+    { value: "oldest", label: "En Eski" },
+    { value: "price-low", label: "Fiyat: Düşükten Yükseğe" },
+    { value: "price-high", label: "Fiyat: Yüksekten Düşüğe" },
+    { value: "name-asc", label: "İsim: A'dan Z'ye" },
+    { value: "name-desc", label: "İsim: Z'den A'ya" },
   ]
 
   const activeFilters = getActiveFilters()
@@ -119,25 +119,25 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
       {/* Search Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Search Products</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Ürün Ara</label>
         <input
           type="text"
           value={filters.query}
           onChange={(e) => handleFilterChange("query", e.target.value)}
-          placeholder="Search by name or description..."
+          placeholder="İsim veya açıklamaya göre ara..."
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
         />
       </div>
 
       {/* Category Filter */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
         <select
           value={filters.category}
           onChange={(e) => handleFilterChange("category", e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
         >
-          <option value="">All Categories</option>
+          <option value="">Tüm Kategoriler</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -148,13 +148,13 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
 
       {/* Price Range */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Price Range (₺)</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Fiyat Aralığı (₺)</label>
         <div className="grid grid-cols-2 gap-3">
           <input
             type="number"
             value={filters.minPrice}
             onChange={(e) => handleFilterChange("minPrice", e.target.value)}
-            placeholder="Min"
+            placeholder="En Az"
             min="0"
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
           />
@@ -162,7 +162,7 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
             type="number"
             value={filters.maxPrice}
             onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
-            placeholder="Max"
+            placeholder="En Çok"
             min="0"
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
           />
@@ -171,7 +171,7 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
 
       {/* Sort By */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Sırala</label>
         <select
           value={filters.sortBy}
           onChange={(e) => handleFilterChange("sortBy", e.target.value)}
@@ -189,9 +189,9 @@ export default function SearchFilters({ categories = [], onFiltersChange }) {
       {activeFilters.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-medium text-gray-700">Active Filters</h4>
+            <h4 className="text-sm font-medium text-gray-700">Aktif Filtreler</h4>
             <button onClick={clearFilters} className="text-sm text-pink-600 hover:text-pink-800 font-medium">
-              Clear All
+              Tümünü Temizle
             </button>
           </div>
           <div className="flex flex-wrap gap-2">

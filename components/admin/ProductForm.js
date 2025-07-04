@@ -41,11 +41,11 @@ export default function ProductForm({ product, onSubmit, onCancel }) {
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Product description is required"
+      newErrors.description = "Ürün açıklaması gereklidir"
     }
 
     if (!formData.image.trim()) {
-      newErrors.image = "Product image URL is required"
+      newErrors.image = "Ürün resmi URL'si gereklidir"
     }
 
     if (!formData.categoryId) {

@@ -65,8 +65,8 @@ export default function MessageManagement({ messages: initialMessages = [], stat
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Message Management</h1>
-          <p className="text-gray-600">View and manage all user messages</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Mesaj Yönetimi</h1>
+          <p className="text-gray-600">Tüm kullanıcı mesajlarını görüntüleyin ve yönetin</p>
         </div>
 
         {/* Filter Tabs */}
@@ -74,9 +74,9 @@ export default function MessageManagement({ messages: initialMessages = [], stat
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               {[
-                { key: "all", label: "All Messages", count: messages.length },
-                { key: "unread", label: "Unread", count: messages.filter((m) => !m.read).length },
-                { key: "read", label: "Read", count: messages.filter((m) => m.read).length },
+                { key: "all", label: "Tüm Mesajlar", count: messages.length },
+                { key: "unread", label: "Okunmamış", count: messages.filter((m) => !m.read).length },
+                { key: "read", label: "Okunmuş", count: messages.filter((m) => m.read).length },
               ].map((tab) => (
                 <button
                   key={tab.key}

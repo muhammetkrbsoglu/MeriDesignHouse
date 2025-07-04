@@ -7,7 +7,7 @@ export default function UserTable({ users: initialUsers }) {
   const [loading, setLoading] = useState(false)
 
   const handleDeleteUser = async (userId) => {
-    if (!confirm("Are you sure you want to delete this user?")) return
+    if (!confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz?")) return
 
     setLoading(true)
     try {
@@ -49,14 +49,14 @@ export default function UserTable({ users: initialUsers }) {
       <table className="min-w-full divide-y divide-neutral-200">
         <thead className="bg-neutral-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">User</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Role</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Kullanıcı</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">E-posta</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Rol</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-              Created
+              Oluşturulma
             </th>
             <th className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">
-              Actions
+              İşlemler
             </th>
           </tr>
         </thead>
@@ -87,14 +87,14 @@ export default function UserTable({ users: initialUsers }) {
                   disabled={loading}
                   className="text-primary-600 hover:text-primary-900 disabled:opacity-50"
                 >
-                  {user.role === "admin" ? "Demote" : "Promote"}
+                  {user.role === "admin" ? "Yetki Azalt" : "Yetki Ver"}
                 </button>
                 <button
                   onClick={() => handleDeleteUser(user.id)}
                   disabled={loading}
                   className="text-red-600 hover:text-red-900 disabled:opacity-50"
                 >
-                  Delete
+                  Sil
                 </button>
               </td>
             </tr>

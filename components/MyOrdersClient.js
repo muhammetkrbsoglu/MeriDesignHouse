@@ -14,10 +14,10 @@ import ImageGallery from "./ImageGallery"
 
 // Dynamically import heavy modal components
 const OrderDetailModal = dynamic(() => import("./OrderDetailModal"), {
-  loading: () => <div className="animate-pulse">Loading...</div>
+  loading: () => <div className="animate-pulse">Yükleniyor...</div>
 })
 const OrderMessageModal = dynamic(() => import("./OrderMessageModal"), {
-  loading: () => <div className="animate-pulse">Loading...</div>
+  loading: () => <div className="animate-pulse">Yükleniyor...</div>
 })
 
 const statusConfig = {
@@ -80,8 +80,7 @@ export default function MyOrdersClient() {
       } else {
         setError(data.error || "Siparişler yüklenemedi")
       }
-    } catch (error) {
-      setError("Network error occurred")
+    } catch (error) {        setError("Ağ hatası oluştu")
     } finally {
       setLoading(false)
     }

@@ -50,34 +50,34 @@ export default function AddProductForm({ categories }) {
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Product description is required"
+      newErrors.description = "Ürün açıklaması gereklidir"
     }
 
     if (!formData.image.trim()) {
-      newErrors.image = "Main product image is required"
+      newErrors.image = "Ana ürün resmi gereklidir"
     }
 
     if (!formData.categoryId) {
-      newErrors.categoryId = "Please select a category"
+      newErrors.categoryId = "Lütfen bir kategori seçin"
     }
 
     // Pricing validation
     const { currentPrice, oldPrice, discount } = pricingData
 
     if (currentPrice && (isNaN(currentPrice) || Number.parseFloat(currentPrice) < 0)) {
-      newErrors.currentPrice = "Please enter a valid current price"
+      newErrors.currentPrice = "Lütfen geçerli bir güncel fiyat girin"
     }
 
     if (oldPrice && (isNaN(oldPrice) || Number.parseFloat(oldPrice) < 0)) {
-      newErrors.oldPrice = "Please enter a valid old price"
+      newErrors.oldPrice = "Lütfen geçerli bir eski fiyat girin"
     }
 
     if (discount && (isNaN(discount) || Number.parseFloat(discount) < 0 || Number.parseFloat(discount) > 100)) {
-      newErrors.discount = "Discount must be between 0 and 100"
+      newErrors.discount = "İndirim 0 ile 100 arasında olmalıdır"
     }
 
     if (currentPrice && oldPrice && Number.parseFloat(currentPrice) > Number.parseFloat(oldPrice)) {
-      newErrors.currentPrice = "Current price cannot be higher than old price"
+      newErrors.currentPrice = "Güncel fiyat eski fiyattan yüksek olamaz"
     }
 
     setErrors(newErrors)
@@ -209,16 +209,16 @@ export default function AddProductForm({ categories }) {
             <div className="flex-shrink-0">
               <img
                 src={formData.image || "/placeholder.svg?height=80&width=80"}
-                alt={formData.title || "New Product"}
+                alt={formData.title || "Yeni Ürün"}
                 className="w-20 h-20 rounded-lg object-cover border-2 border-white shadow-sm"
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold text-gray-900">{formData.title || "New Product"}</h2>
+              <h2 className="text-xl font-semibold text-gray-900">{formData.title || "Yeni Ürün"}</h2>
               <p className="text-gray-600 text-sm mt-1">
                 {formData.categoryId
                   ? categories.find((c) => c.id === formData.categoryId)?.name
-                  : "No category selected"}
+                  : "Kategori seçilmedi"}
               </p>
               <div className="flex items-center space-x-3 mt-2">
                 {formData.featured && (
@@ -250,18 +250,18 @@ export default function AddProductForm({ categories }) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-8">
-          {/* Basic Information */}
+          {/* Temel Bilgiler */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Temel Bilgiler</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="lg:col-span-2">
                 <FormInput
-                  label="Product Title"
+                  label="Ürün Başlığı"
                   id="title"
                   name="title"
                   value={formData.title}
                   onChange={handleChange("title")}
-                  placeholder="Enter product title"
+                  placeholder="Ürün başlığını girin"
                   required
                   error={errors.title}
                   disabled={loading}
@@ -270,12 +270,12 @@ export default function AddProductForm({ categories }) {
 
               <div className="lg:col-span-2">
                 <FormTextarea
-                  label="Description"
+                  label="Açıklama"
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange("description")}
-                  placeholder="Describe the product in detail"
+                  placeholder="Ürünü detaylı olarak açıklayın"
                   required
                   error={errors.description}
                   disabled={loading}
@@ -284,13 +284,13 @@ export default function AddProductForm({ categories }) {
               </div>
 
               <FormSelect
-                label="Category"
+                label="Kategori"
                 id="categoryId"
                 name="categoryId"
                 value={formData.categoryId}
                 onChange={handleChange("categoryId")}
                 options={categoryOptions}
-                placeholder="Select a category"
+                placeholder="Bir kategori seçin"
                 required
                 error={errors.categoryId}
                 disabled={loading}
@@ -305,7 +305,7 @@ export default function AddProductForm({ categories }) {
                     disabled={loading}
                     className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 focus:ring-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">Featured Product</span>
+                  <span className="text-sm font-medium text-gray-700">Öne Çıkan Ürün</span>
                 </label>
 
                 {/* ✅ Added Popular Product Checkbox */}
@@ -317,28 +317,28 @@ export default function AddProductForm({ categories }) {
                     disabled={loading}
                     className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 focus:ring-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">Mark as Popular</span>
+                  <span className="text-sm font-medium text-gray-700">Popüler Olarak İşaretle</span>
                 </label>
               </div>
             </div>
           </div>
 
-          {/* Dynamic Pricing */}
+          {/* Dinamik Fiyatlandırma */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Pricing (Optional)</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Fiyatlandırma (İsteğe Bağlı)</h3>
               <button
                 type="button"
                 onClick={resetPricing}
                 className="text-sm text-gray-500 hover:text-gray-700 underline"
               >
-                Clear All Prices
+                Tüm Fiyatları Temizle
               </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <FormInput
-                label="Current Price (₺)"
+                label="Güncel Fiyat (₺)"
                 id="currentPrice"
                 name="currentPrice"
                 type="number"
@@ -349,11 +349,11 @@ export default function AddProductForm({ categories }) {
                 placeholder="0.00"
                 error={errors.currentPrice}
                 disabled={loading}
-                helperText="The selling price of the product"
+                helperText="Ürünün satış fiyatı"
               />
 
               <FormInput
-                label="Old Price (₺)"
+                label="Eski Fiyat (₺)"
                 id="oldPrice"
                 name="oldPrice"
                 type="number"
@@ -364,11 +364,11 @@ export default function AddProductForm({ categories }) {
                 placeholder="0.00"
                 error={errors.oldPrice}
                 disabled={loading}
-                helperText="Original price before discount"
+                helperText="İndirimden önceki orijinal fiyat"
               />
 
               <FormInput
-                label="Discount (%)"
+                label="İndirim (%)"
                 id="discount"
                 name="discount"
                 type="number"
@@ -379,11 +379,11 @@ export default function AddProductForm({ categories }) {
                 placeholder="0"
                 error={errors.discount}
                 disabled={loading}
-                helperText="Discount percentage (0-100)"
+                helperText="İndirim yüzdesi (0-100)"
               />
             </div>
 
-            {/* Pricing Preview */}
+            {/* Fiyatlandırma Önizlemesi */}
             {hasValidPricing && (
               <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-center space-x-2">
@@ -395,16 +395,16 @@ export default function AddProductForm({ categories }) {
                     />
                   </svg>
                   <span className="text-green-800 font-medium">
-                    You saved ₺{savings.toFixed(2)} ({discountNum}% discount)
+                    ₺{savings.toFixed(2)} tasarruf (%{discountNum} indirim)
                   </span>
                 </div>
                 <p className="text-green-700 text-sm mt-1">
-                  Customer pays ₺{currentPriceNum.toFixed(2)} instead of ₺{oldPriceNum.toFixed(2)}
+                  Müşteri ₺{oldPriceNum.toFixed(2)} yerine ₺{currentPriceNum.toFixed(2)} ödeyecek
                 </p>
               </div>
             )}
 
-            {/* Pricing Errors */}
+            {/* Fiyatlandırma Hataları */}
             {(errors.currentPrice || errors.oldPrice || errors.discount) && (
               <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center space-x-2">
@@ -415,20 +415,20 @@ export default function AddProductForm({ categories }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-red-800 font-medium">Pricing Issues Detected</span>
+                  <span className="text-red-800 font-medium">Fiyatlandırma Sorunları Tespit Edildi</span>
                 </div>
-                <p className="text-red-700 text-sm mt-1">Please fix the pricing errors above before saving.</p>
+                <p className="text-red-700 text-sm mt-1">Lütfen kaydetmeden önce yukarıdaki fiyatlandırma hatalarını düzeltin.</p>
               </div>
             )}
           </div>
 
-          {/* Images */}
+          {/* Resimler */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Ürün Resimleri</h3>
 
-            {/* Main Image */}
+            {/* Ana Resim */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Main Image *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Ana Resim *</label>
               <ImageUpload
                 images={formData.image ? [{ id: "main", url: formData.image }] : []}
                 onImagesChange={(images) => {
@@ -443,12 +443,12 @@ export default function AddProductForm({ categories }) {
               {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
             </div>
 
-            {/* Additional Images */}
+            {/* Ek Resimler */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Additional Images</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Ek Resimler</label>
               <ImageUpload images={additionalImages} onImagesChange={handleAdditionalImagesUpload} maxImages={5} />
               <p className="text-xs text-gray-500 mt-1">
-                Upload up to 5 additional images to showcase your product from different angles
+                Ürününüzü farklı açılardan sergilemek için 5 adede kadar ek resim yükleyebilirsiniz
               </p>
             </div>
           </div>
@@ -459,7 +459,7 @@ export default function AddProductForm({ categories }) {
             </div>
           )}
 
-          {/* Actions */}
+          {/* Aksiyonlar */}
           <div className="flex space-x-4 pt-6 border-t border-gray-200">
             <button
               type="submit"
@@ -467,7 +467,7 @@ export default function AddProductForm({ categories }) {
               className="px-6 py-3 bg-pink-600 text-white rounded-lg text-sm font-medium hover:bg-pink-700 focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {loading && <LoadingSpinner size="sm" />}
-              <span>{loading ? "Creating..." : "Create Product"}</span>
+              <span>{loading ? "Oluşturuluyor..." : "Ürün Oluştur"}</span>
             </button>
             <button
               type="button"
@@ -475,7 +475,7 @@ export default function AddProductForm({ categories }) {
               className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               disabled={loading}
             >
-              Cancel
+              İptal
             </button>
           </div>
         </form>

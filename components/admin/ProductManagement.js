@@ -57,7 +57,7 @@ export default function ProductManagement({ products = [], categories = [], stat
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Products</p>
+              <p className="text-sm font-medium text-gray-600">Toplam Ürün</p>
               <p className="text-2xl font-bold text-gray-900">{stats.totalProducts || 0}</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -69,7 +69,7 @@ export default function ProductManagement({ products = [], categories = [], stat
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Featured Products</p>
+              <p className="text-sm font-medium text-gray-600">Öne Çıkan Ürünler</p>
               <p className="text-2xl font-bold text-gray-900">{stats.featuredProducts || 0}</p>
             </div>
             <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -81,7 +81,7 @@ export default function ProductManagement({ products = [], categories = [], stat
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Recent Products</p>
+              <p className="text-sm font-medium text-gray-600">Son Ürünler</p>
               <p className="text-2xl font-bold text-gray-900">{stats.recentProducts || 0}</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -93,7 +93,7 @@ export default function ProductManagement({ products = [], categories = [], stat
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Categories</p>
+              <p className="text-sm font-medium text-gray-600">Kategoriler</p>
               <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -109,7 +109,7 @@ export default function ProductManagement({ products = [], categories = [], stat
           <div className="flex-1">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Ürün ara..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -121,7 +121,7 @@ export default function ProductManagement({ products = [], categories = [], stat
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
-              <option value="">All Categories</option>
+              <option value="">Tüm Kategoriler</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -133,10 +133,10 @@ export default function ProductManagement({ products = [], categories = [], stat
               onChange={(e) => setSortBy(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="name">Name A-Z</option>
-              <option value="price">Price High-Low</option>
+              <option value="newest">En Yeni</option>
+              <option value="oldest">En Eski</option>
+              <option value="name">İsim A-Z</option>
+              <option value="price">Fiyat Yüksek-Düşük</option>
             </select>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function ProductManagement({ products = [], categories = [], stat
       {/* Products List */}
       <div className="bg-white rounded-xl shadow-sm border">
         <div className="p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-900">Products ({sortedProducts.length})</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Ürünler ({sortedProducts.length})</h2>
         </div>
         <div className="p-6">
           {sortedProducts.length > 0 ? (
@@ -168,13 +168,13 @@ export default function ProductManagement({ products = [], categories = [], stat
                       </div>
                     )}
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{product.title || "Untitled Product"}</h3>
-                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description || "No description"}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">{product.title || "İsimsiz Ürün"}</h3>
+                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description || "Açıklama yok"}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       {product.price && <span className="font-bold text-green-600">₺{product.price}</span>}
                       {product.featured && (
-                        <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Featured</span>
+                        <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Öne Çıkan</span>
                       )}
                     </div>
                     <div className="flex space-x-2">
@@ -182,13 +182,13 @@ export default function ProductManagement({ products = [], categories = [], stat
                         href={`/admin/products/edit/${product.id}`}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                       >
-                        Edit
+                        Düzenle
                       </Link>
                       <button
                         onClick={() => handleDelete(product.id)}
                         className="text-red-600 hover:text-red-800 text-sm font-medium"
                       >
-                        Delete
+                        Sil
                       </button>
                     </div>
                   </div>

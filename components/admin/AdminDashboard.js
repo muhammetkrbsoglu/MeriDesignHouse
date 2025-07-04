@@ -29,25 +29,25 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
       link: "/admin/categories",
     },
     {
-      title: "Messages",
+      title: "Mesajlar",
       value: stats.totalMessages,
-      change: `${stats.unreadMessages} unread`,
+      change: `${stats.unreadMessages} okunmamış`,
       icon: "💬",
       color: "bg-pink-500",
       link: "/admin/messages",
     },
     {
-      title: "Orders",
+      title: "Siparişler",
       value: stats.totalOrders || 0,
-      change: `${stats.pendingOrders || 0} pending`,
+      change: `${stats.pendingOrders || 0} beklemede`,
       icon: "🛒",
       color: "bg-orange-500",
       link: "/admin/orders",
     },
     {
-      title: "Featured Products",
+      title: "Öne Çıkan Ürünler",
       value: stats.featuredProducts,
-      change: "Homepage featured",
+      change: "Ana sayfada gösterilen",
       icon: "⭐",
       color: "bg-yellow-500",
       link: "/admin/products?featured=true",
@@ -59,14 +59,14 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Welcome back! Here's what's happening with your site.</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Yönetim Paneli</h1>
+          <p className="text-gray-600">Hoş geldiniz! Sitenizde neler olup bittiğini burada görebilirsiniz.</p>
         </div>
 
         {/* Quick Actions */}
         <div className="mb-8 bg-white rounded-xl shadow-sm border">
           <div className="p-6 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Hızlı İşlemler</h2>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
@@ -104,7 +104,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                 <div className="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white text-xl mb-2">
                   💬
                 </div>
-                <span className="text-sm font-medium text-gray-900">View Messages</span>
+                <span className="text-sm font-medium text-gray-900">Mesajları Görüntüle</span>
               </Link>
               <Link
                 href="/admin/orders"
@@ -113,7 +113,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                 <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white text-xl mb-2">
                   🛒
                 </div>
-                <span className="text-sm font-medium text-gray-900">Manage Orders</span>
+                <span className="text-sm font-medium text-gray-900">Siparişleri Yönet</span>
               </Link>
               <Link
                 href="/admin/messages"
@@ -122,7 +122,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                 <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center text-white text-xl mb-2">
                   📧
                 </div>
-                <span className="text-sm font-medium text-gray-900">Admin Messages</span>
+                <span className="text-sm font-medium text-gray-900">Admin Mesajları</span>
               </Link>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
           {/* Recent Activity */}
           <div className="bg-white rounded-xl shadow-sm border">
             <div className="p-6 border-b">
-              <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Son Aktiviteler</h2>
             </div>
             <div className="p-6">
               {recentActivity.length > 0 ? (
@@ -177,7 +177,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">No recent activity</p>
+                <p className="text-gray-500 text-center py-8">Son aktivite bulunmuyor</p>
               )}
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                       </div>
                       <div className="text-right">
                         <p className="font-semibold text-gray-900">{category._count.products}</p>
-                        <p className="text-xs text-gray-500">products</p>
+                        <p className="text-xs text-gray-500">ürün</p>
                       </div>
                     </div>
                   ))}
@@ -229,7 +229,7 @@ export default function AdminDashboard({ stats, recentActivity, topCategories, r
                       {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 truncate">{user.name || "No name"}</p>
+                      <p className="font-medium text-gray-900 truncate">{user.name || "İsim yok"}</p>
                       <p className="text-sm text-gray-500 truncate">{user.email}</p>
                       <p className="text-xs text-gray-400">{new Date(user.createdAt).toLocaleDateString()}</p>
                     </div>
