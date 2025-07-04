@@ -26,9 +26,7 @@ export default function OrderMessageModal({ order, onClose }) {
         }),
       })
 
-      console.log("📤 Response status:", response.status, response.ok)
       const data = await response.json()
-      console.log("📤 Response data:", data)
 
       if (response.ok && data.message) {
         alert("Mesajınız başarıyla gönderildi!")

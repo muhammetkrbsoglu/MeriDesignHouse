@@ -1,0 +1,34 @@
+{
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "javascript": "javascript",
+    "typescript": "javascript",
+    "javascriptreact": "javascript",
+    "typescriptreact": "javascript",
+    "css": "css",
+    "postcss": "css"
+  },
+  "tailwindCSS.validate": true,
+  "tailwindCSS.lint.cssConflict": "warning",
+  "tailwindCSS.lint.invalidApply": "error",
+  "tailwindCSS.lint.invalidConfigPath": "error",
+  "tailwindCSS.lint.invalidScreen": "error",
+  "tailwindCSS.lint.invalidTailwindDirective": "error",
+  "tailwindCSS.lint.invalidVariant": "error",
+  "tailwindCSS.lint.recommendedVariantOrder": "warning",
+  "tailwindCSS.experimental.classRegex": [
+    ["cn\\(([^)]*)\\)", "'([^']*)'"],
+    ["className=\"([^\"]*)\"", "([a-zA-Z0-9\\-:]+)"]
+  ],
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "globals.css": "tailwindcss"
+  },
+  "emmet.includeLanguages": {
+    "tailwindcss": "css"
+  }
+}

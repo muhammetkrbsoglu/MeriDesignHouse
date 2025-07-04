@@ -16,12 +16,6 @@ async function getProduct(id) {
       },
     })
 
-    if (product) {
-      console.log(`Product ${id} found with ${product.images?.length || 0} additional images`)
-      console.log("Product images:", product.images)
-      console.log("Main image:", product.image)
-    }
-
     return product
   } catch (error) {
     console.error("Error fetching product:", error)

@@ -146,8 +146,6 @@ export default function OrderRequestClient({ product }) {
         deliveryFee: pricing.deliveryFee,
       }
 
-      console.log("Submitting order:", orderData)
-
       const response = await fetch("/api/orders/request", {
         method: "POST",
         headers: {

@@ -1,7 +1,19 @@
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import AdminDashboard from "@/components/admin/AdminDashboard"
+import dynamic from "next/dynamic"
+
+// Dynamically import admin dashboard for better performance
+const AdminDashboard = dynamic(() => import("@/components/admin/AdminDashboard"), {
+  loading: () => (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading dashboard...</p>
+      </div>
+    </div>
+  )
+})
 
 export default async function AdminPage() {
   const { userId, sessionClaims } = await auth()

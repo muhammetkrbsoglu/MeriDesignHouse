@@ -131,9 +131,9 @@ export default async function CategoryPage({ params }) {
           <nav className="flex justify-center" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               <li className="inline-flex items-center">
-                <a href="/" className="text-gray-700 hover:text-pink-600 inline-flex items-center">
+                <Link href="/" className="text-gray-700 hover:text-pink-600 inline-flex items-center">
                   Ana Sayfa
-                </a>
+                </Link>
               </li>
               <li>
                 <div className="flex items-center">
@@ -144,9 +144,9 @@ export default async function CategoryPage({ params }) {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <a href="/categories" className="ml-1 text-gray-700 hover:text-pink-600 md:ml-2">
+                  <Link href="/categories" className="ml-1 text-gray-700 hover:text-pink-600 md:ml-2">
                     Kategoriler
-                  </a>
+                  </Link>
                 </div>
               </li>
               {category.parent && (
@@ -231,12 +231,12 @@ export default async function CategoryPage({ params }) {
                 : "Bu kategoriye henüz ürün eklenmemiş. Çok yakında sizlerle buluşacak olan özel tasarımlarımızı kaçırmayın!"}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/categories"
                 className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-200"
               >
                 Diğer Kategoriler
-              </a>
+              </Link>
               <a
                 href="/contact"
                 className={`inline-flex items-center px-6 py-3 bg-gradient-to-r ${categoryColor} text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200`}

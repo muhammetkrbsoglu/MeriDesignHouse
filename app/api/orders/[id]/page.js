@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import OrderDetailsClient from "@/components/admin/OrderDetailsClient"
+import OrderDetails from "@/components/admin/OrderDetails"
 
 export default async function OrderDetailPage({ params }) {
   const { userId, sessionClaims } = await auth()
@@ -49,7 +49,7 @@ export default async function OrderDetailPage({ params }) {
       redirect("/admin/orders")
     }
 
-    return <OrderDetailsClient order={order} />
+    return <OrderDetails order={order} />
   } catch (error) {
     console.error("Error fetching order:", error)
     redirect("/admin/orders")

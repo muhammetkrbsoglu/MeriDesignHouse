@@ -18,17 +18,14 @@ export default function CategoryManagement() {
 
   const fetchCategories = async () => {
     try {
-      console.log("Fetching categories...")
       const response = await fetch("/api/admin/categories")
 
       if (!response.ok) {
         const errorText = await response.text()
-        console.error("API Error:", errorText)
         throw new Error(`HTTP ${response.status}: ${errorText}`)
       }
 
       const data = await response.json()
-      console.log("Categories data:", data)
 
       if (Array.isArray(data)) {
         setCategories(data)

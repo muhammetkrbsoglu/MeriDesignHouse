@@ -10,10 +10,9 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { messageId } = params
+    // Await params in Next.js 15+
+    const { messageId } = await params
     const { read } = await request.json()
-
-    console.log("Updating message:", messageId, "read status:", read)
 
     const message = await prisma.message.update({
       where: { id: messageId },
@@ -48,12 +47,11 @@ export async function DELETE(request, { params }) {
     const { userId } = await auth()
 
     if (!userId) {
-      console.log("No userId found in auth")
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { messageId } = params
-    console.log("Attempting to delete message:", messageId, "by user:", userId)
+    // Await params in Next.js 15+
+    const { messageId } = await params
 
     // First check if message exists
     const existingMessage = await prisma.message.findUnique({
@@ -61,7 +59,6 @@ export async function DELETE(request, { params }) {
     })
 
     if (!existingMessage) {
-      console.log("Message not found:", messageId)
       return NextResponse.json({ error: "Message not found" }, { status: 404 })
     }
 

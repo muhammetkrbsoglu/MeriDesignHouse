@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import Link from "next/link"
 import { useUser } from "@clerk/nextjs"
 import { UserButton } from "@clerk/nextjs"
@@ -24,7 +24,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
-export default function Navbar() {
+function Navbar() {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
   const [categories, setCategories] = useState([])
@@ -55,7 +55,6 @@ export default function Navbar() {
 
       try {
         setLoading(true)
-        console.log("🚀 Fetching categories for navbar...")
 
         const response = await fetch("/api/categories/navbar", {
           method: "GET",
@@ -69,15 +68,12 @@ export default function Navbar() {
         }
 
         const data = await response.json()
-        console.log("📦 Navbar API response:", data)
 
         if (isMounted && data.success) {
-          console.log("✅ Setting categories:", data.categories)
           setCategories(data.categories || [])
           setLoading(false)
         }
       } catch (error) {
-        console.error("❌ Error fetching categories:", error)
         if (isMounted) {
           setCategories([])
           setLoading(false)
@@ -406,3 +402,6 @@ export default function Navbar() {
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(Navbar)

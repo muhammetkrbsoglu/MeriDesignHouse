@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@clerk/nextjs"
+import Link from "next/link"
 
 export default function ContactFormClient() {
   const [formData, setFormData] = useState({
@@ -151,9 +152,9 @@ export default function ContactFormClient() {
         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-blue-700 text-sm">
             Lütfen{" "}
-            <a href="/sign-in" className="underline font-medium">
+            <Link href="/sign-in" className="underline font-medium">
               giriş yapın
-            </a>{" "}
+            </Link>{" "}
             mesaj göndermek ve konuşmanızı takip etmek için.
           </p>
         </div>

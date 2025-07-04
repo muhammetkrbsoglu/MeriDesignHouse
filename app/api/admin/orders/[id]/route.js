@@ -16,7 +16,8 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { id } = params
+    // Await params in Next.js 15+
+    const { id } = await params
 
     const order = await prisma.orderRequest.findUnique({
       where: { id },
@@ -86,7 +87,8 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { id } = params
+    // Await params in Next.js 15+
+    const { id } = await params
     const body = await request.json()
 
     const updatedOrder = await prisma.orderRequest.update({
@@ -141,7 +143,8 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { id } = params
+    // Await params in Next.js 15+
+    const { id } = await params
 
     await prisma.orderRequest.delete({
       where: { id },
@@ -149,7 +152,6 @@ export async function DELETE(request, { params }) {
 
     return NextResponse.json({ message: "Order deleted successfully" })
   } catch (error) {
-    console.error("Order delete error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

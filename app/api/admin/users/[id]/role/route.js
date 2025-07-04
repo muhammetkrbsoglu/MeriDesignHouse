@@ -15,10 +15,9 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { id } = params
+    // Await params in Next.js 15+
+    const { id } = await params
     const { role } = await request.json()
-
-    console.log("Role update request:", { id, role, currentUser })
 
     // Validate role
     if (!["admin", "user"].includes(role)) {

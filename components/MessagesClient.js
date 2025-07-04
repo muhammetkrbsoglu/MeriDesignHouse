@@ -68,7 +68,7 @@ export default function MessagesClient({
                             <div>
                               <h3 className="font-semibold text-neutral-900">{conversation.otherUser.name}</h3>
                               <p className="text-sm text-neutral-600 truncate max-w-md">
-                                {conversation.fromUserId === currentUser.id ? "You: " : ""}
+                                {conversation.senderId === currentUser.id ? "You: " : ""}
                                 {conversation.content}
                               </p>
                             </div>
@@ -76,7 +76,7 @@ export default function MessagesClient({
                               <p className="text-xs text-neutral-500">
                                 {new Date(conversation.createdAt).toLocaleDateString()}
                               </p>
-                              {!conversation.read && conversation.toUserId === currentUser.id && (
+                              {!conversation.read && conversation.receiverId === currentUser.id && (
                                 <div className="w-2 h-2 bg-primary-600 rounded-full mt-1 ml-auto"></div>
                               )}
                             </div>

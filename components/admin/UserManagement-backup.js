@@ -127,35 +127,11 @@ export default function UserManagement() {
   }
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("tr-TR", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     })
-  }
-
-  const getUserInitials = (user) => {
-    if (user.name && user.name.trim()) {
-      const names = user.name.trim().split(' ').filter(n => n.length > 0)
-      if (names.length > 1) {
-        return names[0].charAt(0).toUpperCase() + names[names.length - 1].charAt(0).toUpperCase()
-      }
-      return user.name.charAt(0).toUpperCase()
-    }
-    if (user.email) {
-      return user.email.charAt(0).toUpperCase()
-    }
-    return "U"
-  }
-
-  const getUserDisplayName = (user) => {
-    if (user.name && user.name.trim()) {
-      return user.name.trim()
-    }
-    if (user.email) {
-      return user.email.split("@")[0]
-    }
-    return "Unknown User"
   }
 
   return (
@@ -240,18 +216,18 @@ export default function UserManagement() {
           {/* Users Table */}
           <div className="space-y-4">
             <div className="hidden md:grid md:grid-cols-6 gap-4 font-medium text-sm text-muted-foreground border-b pb-2">
-              <div className="col-span-2">USER</div>
-              <div className="text-center">ROLE</div>
-              <div className="text-center">MESSAGES</div>
-              <div className="text-center">JOINED</div>
-              <div className="text-right">ACTIONS</div>
+              <div>USER</div>
+              <div>ROLE</div>
+              <div>MESSAGES</div>
+              <div>JOINED</div>
+              <div>ACTIONS</div>
             </div>
 
             {loading ? (
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (
                   <div key={i} className="flex items-center space-x-4 p-4 border rounded-lg">
-                    <div className="w-12 h-12 bg-gray-200 rounded-full animate-pulse"></div>
+                    <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
                     <div className="flex-1 space-y-2">
                       <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
                       <div className="h-3 bg-gray-200 rounded w-2/3 animate-pulse"></div>
@@ -265,25 +241,22 @@ export default function UserManagement() {
                 <p>No users found</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {users.map((user) => (
                   <div
                     key={user.id}
-                    className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center p-4 border rounded-lg hover:bg-gray-50/50 transition-colors"
+                    className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    {/* User Info Column - spans 2 columns on desktop */}
+                    {/* User Info Column */}
                     <div className="flex items-center space-x-3 col-span-1 md:col-span-2">
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg">
-                        {getUserInitials(user)}
+                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        {user.name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || "U"}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-semibold text-gray-900 truncate text-base leading-tight">
-                          {getUserDisplayName(user)}
+                        <div className="font-medium text-gray-900 truncate">
+                          {user.name || user.email?.split("@")[0] || "Unknown User"}
                         </div>
-                        <div className="text-sm text-gray-500 truncate leading-tight">{user.email}</div>
-                        <div className="text-xs text-gray-400 mt-1 md:hidden">
-                          Joined {formatDate(user.joinedAt)}
-                        </div>
+                        <div className="text-sm text-gray-500 truncate">{user.email}</div>
                       </div>
                     </div>
 
@@ -291,28 +264,15 @@ export default function UserManagement() {
                     <div className="flex justify-start md:justify-center">
                       <Badge 
                         variant={user.role === "admin" ? "default" : "secondary"}
-                        className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium"
+                        className="inline-flex"
                       >
-                        {user.role === "admin" ? (
-                          <>
-                            <Shield className="w-3 h-3 mr-1" />
-                            admin
-                          </>
-                        ) : (
-                          "user"
-                        )}
+                        {user.role === "admin" ? "Admin" : "User"}
                       </Badge>
                     </div>
 
                     {/* Messages Column */}
                     <div className="text-sm text-gray-600 md:text-center">
-                      <span className="font-medium">{user.messageCount || 0}</span>
-                      <span className="text-gray-400 ml-1 md:hidden">messages</span>
-                    </div>
-
-                    {/* Joined Date Column - Only visible on desktop */}
-                    <div className="hidden md:block text-sm text-gray-600 text-center">
-                      {formatDate(user.joinedAt)}
+                      {user.messageCount || 0} messages
                     </div>
 
                     {/* Actions Column */}
@@ -323,7 +283,7 @@ export default function UserManagement() {
                           variant="outline"
                           onClick={() => handleRoleChange(user.id, "user")}
                           disabled={updating[user.id]}
-                          className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                          className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300"
                         >
                           {updating[user.id] ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
@@ -340,7 +300,7 @@ export default function UserManagement() {
                           variant="outline"
                           onClick={() => handleRoleChange(user.id, "admin")}
                           disabled={updating[user.id]}
-                          className="text-green-600 hover:text-green-700 border-green-200 hover:border-green-300 hover:bg-green-50"
+                          className="text-green-600 hover:text-green-700 border-green-200 hover:border-green-300"
                         >
                           {updating[user.id] ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
@@ -358,7 +318,27 @@ export default function UserManagement() {
                         variant="outline"
                         onClick={() => handleDeleteUser(user.id)}
                         disabled={updating[user.id]}
-                        className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300"
+                      >
+                        {updating[user.id] ? (
+                          <RefreshCw className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                            </>
+                          )}
+                        </Button>
+                      )}
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDeleteUser(user.id)}
+                        disabled={updating[user.id]}
+                        className="text-red-600 hover:text-red-700"
                       >
                         {updating[user.id] ? (
                           <RefreshCw className="h-4 w-4 animate-spin" />
@@ -374,7 +354,7 @@ export default function UserManagement() {
 
             {/* Pagination */}
             {pagination.pages > 1 && (
-              <div className="flex items-center justify-between pt-6 border-t">
+              <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
                   Showing {(page - 1) * 10 + 1} to {Math.min(page * 10, pagination.total)} of {pagination.total} users
                 </div>
@@ -382,7 +362,7 @@ export default function UserManagement() {
                   <Button variant="outline" size="sm" onClick={() => setPage(page - 1)} disabled={page <= 1}>
                     Previous
                   </Button>
-                  <span className="text-sm px-2">
+                  <span className="text-sm">
                     Page {page} of {pagination.pages}
                   </span>
                   <Button

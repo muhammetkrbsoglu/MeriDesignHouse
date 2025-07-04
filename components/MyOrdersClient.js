@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUser } from "@clerk/nextjs"
+import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -9,9 +10,15 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
 import { formatPrice } from "@/lib/priceUtils"
 import { Package, Clock, CheckCircle, XCircle, Truck, Calendar, Phone, MapPin, User, MessageSquare } from "lucide-react"
-import OrderDetailModal from "./OrderDetailModal"
-import OrderMessageModal from "./OrderMessageModal"
 import ImageGallery from "./ImageGallery"
+
+// Dynamically import heavy modal components
+const OrderDetailModal = dynamic(() => import("./OrderDetailModal"), {
+  loading: () => <div className="animate-pulse">Loading...</div>
+})
+const OrderMessageModal = dynamic(() => import("./OrderMessageModal"), {
+  loading: () => <div className="animate-pulse">Loading...</div>
+})
 
 const statusConfig = {
   pending: {
@@ -70,12 +77,10 @@ export default function MyOrdersClient() {
 
       if (data.success) {
         setOrders(data.orders)
-        console.log("Fetched orders:", data.orders)
       } else {
         setError(data.error || "Siparişler yüklenemedi")
       }
     } catch (error) {
-      console.error("Error fetching orders:", error)
       setError("Network error occurred")
     } finally {
       setLoading(false)
@@ -241,16 +246,6 @@ export default function MyOrdersClient() {
               const StatusIcon = status.icon
               const unitPrice = getUnitPrice(order)
               const subtotal = getSubtotal(order)
-
-              console.log(`Order ${order.id} price calculation:`, {
-                unitPrice,
-                quantity: order.quantity,
-                subtotal,
-                totalPrice: order.totalPrice,
-                storedUnitPrice: order.unitPrice,
-                storedSubtotal: order.subtotal,
-                productPrice: order.product?.price,
-              })
 
               return (
                 <Card key={order.id} className="overflow-hidden hover:shadow-md transition-shadow">

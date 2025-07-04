@@ -1,14 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Grid, Package, RefreshCw, AlertCircle } from "lucide-react"
+import Image from "next/image"
 
-export default function CategoryGrid() {
+function CategoryGrid() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -18,17 +19,13 @@ export default function CategoryGrid() {
       setLoading(true)
       setError(null)
 
-      console.log("Fetching categories from API...")
       const response = await fetch("/api/categories/navbar")
-
-      console.log("API Response status:", response.status)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const data = await response.json()
-      console.log("API Response data:", data)
 
       // Handle different possible response structures
       let categoriesArray = []
@@ -46,7 +43,6 @@ export default function CategoryGrid() {
         categoriesArray = []
       }
 
-      console.log("Processed categories array:", categoriesArray)
       setCategories(categoriesArray)
     } catch (error) {
       console.error("Error fetching categories:", error)
@@ -133,13 +129,12 @@ export default function CategoryGrid() {
               <Card className="group cursor-pointer overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                 <CardContent className="p-0">
                   <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100">
-                    <img
-                      src={category.image || "/placeholder.svg?height=200&width=200"}
+                    <Image
+                      src={category.image || "/placeholder.svg"}
                       alt={category.name}
+                      width={200}
+                      height={200}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        e.target.src = "/placeholder.svg?height=200&width=200"
-                      }}
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
                   </div>
@@ -172,3 +167,6 @@ export default function CategoryGrid() {
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(CategoryGrid)

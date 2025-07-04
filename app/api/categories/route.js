@@ -3,8 +3,6 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET() {
   try {
-    console.log("🔍 Fetching categories for categories page...")
-
     // Get ALL categories with children for the categories page
     const categories = await prisma.category.findMany({
       where: {
@@ -64,13 +62,23 @@ export async function GET() {
         return total
       }
 
-      return {
-        ...category,
-        totalProducts: calculateTotalProducts(category)
+      // Function to add totalProducts to all categories recursively
+      const addTotalProductsToAll = (cat) => {
+        const totalProducts = calculateTotalProducts(cat)
+        const updatedCat = {
+          ...cat,
+          totalProducts
+        }
+        
+        if (cat.children) {
+          updatedCat.children = cat.children.map(child => addTotalProductsToAll(child))
+        }
+        
+        return updatedCat
       }
-    })
 
-    console.log(`✅ Found ${categoriesWithCounts.length} root categories`)
+      return addTotalProductsToAll(category)
+    })
 
     return NextResponse.json({
       success: true,
@@ -78,7 +86,6 @@ export async function GET() {
       totalCategories: categoriesWithCounts.length
     })
   } catch (error) {
-    console.error("❌ Error fetching categories:", error)
     return NextResponse.json(
       { success: false, error: "Kategoriler yüklenirken hata oluştu" },
       { status: 500 }

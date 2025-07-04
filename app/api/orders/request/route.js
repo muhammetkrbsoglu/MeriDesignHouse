@@ -13,7 +13,6 @@ export async function POST(request) {
     }
 
     const body = await request.json()
-    console.log("Received order data:", body)
 
     const {
       productId,
@@ -60,15 +59,6 @@ export async function POST(request) {
     const finalDeliveryFee = Number.parseFloat(deliveryFee) || 0
     const finalTotalPrice = Number.parseFloat(totalPrice) || subtotal + finalDeliveryFee
 
-    console.log("Price calculation:", {
-      productPrice,
-      unitPrice,
-      quantity,
-      subtotal,
-      deliveryFee: finalDeliveryFee,
-      totalPrice: finalTotalPrice,
-    })
-
     // Create order request using the correct schema fields
     const orderRequest = await prisma.orderRequest.create({
       data: {
@@ -101,16 +91,12 @@ export async function POST(request) {
       },
     })
 
-    console.log("Order request created successfully:", orderRequest.id)
-
     return NextResponse.json({
       success: true,
       message: "Sipariş talebi başarıyla oluşturuldu",
       orderRequest,
     })
   } catch (error) {
-    console.error("Error creating order request:", error)
-    console.error("Error stack:", error.stack)
     return NextResponse.json(
       {
         success: false,

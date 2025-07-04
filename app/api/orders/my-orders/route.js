@@ -40,14 +40,11 @@ export async function GET() {
       },
     })
 
-    console.log(`Found ${orders.length} orders for user ${user.id}`)
-
     return NextResponse.json({
       success: true,
       orders,
     })
   } catch (error) {
-    console.error("Error fetching orders:", error)
     return NextResponse.json(
       {
         success: false,

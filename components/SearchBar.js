@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, memo } from "react"
 import { useRouter } from "next/navigation"
 import { Search, X } from "lucide-react"
 
-export default function SearchBar({ className = "" }) {
+function SearchBar({ className = "" }) {
   const [query, setQuery] = useState("")
   const [suggestions, setSuggestions] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -147,3 +147,6 @@ export default function SearchBar({ className = "" }) {
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(SearchBar)

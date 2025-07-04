@@ -27,7 +27,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Message not found" }, { status: 404 })
     }
 
-    if (message.fromUserId !== currentUser.id) {
+    if (message.senderId !== currentUser.id) {
       return NextResponse.json({ error: "Can only delete your own messages" }, { status: 403 })
     }
 

@@ -1,6 +1,11 @@
 import { auth } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { createClerkClient } from "@clerk/nextjs/server"
+
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+})
 
 export async function POST(request) {
   try {
@@ -24,11 +29,15 @@ export async function POST(request) {
     })
 
     if (!dbUser) {
+      // If user doesn't exist in database, create with their actual Clerk info
+      // Get user info from Clerk
+      const clerkUser = await clerkClient.users.getUser(userId)
+      
       dbUser = await prisma.user.create({
         data: {
           clerkId: userId,
-          name: name,
-          email: email,
+          name: clerkUser.fullName || clerkUser.firstName || name,
+          email: clerkUser.emailAddresses[0]?.emailAddress || email,
           role: "user",
         },
       })
@@ -46,6 +55,9 @@ export async function POST(request) {
     // Create message content with contact form context
     const messageContent = `İletişim sayfasından yönlendirildi.
 
+Gönderen: ${dbUser.name} (${dbUser.email})
+Form üzerindeki bilgiler: ${name} (${email})
+
 ${occasion ? `Etkinlik: ${occasion}` : ""}
 
 Mesaj:
@@ -55,9 +67,11 @@ ${message}`
     const newMessage = await prisma.message.create({
       data: {
         content: messageContent,
-        fromUserId: dbUser.id,
-        toUserId: adminUser.id,
+        senderId: dbUser.id,
+        receiverId: adminUser.id,
         read: false,
+        type: "contact",
+        subject: `İletişim Formu${occasion ? ` - ${occasion}` : ""}`,
       },
     })
 
@@ -67,7 +81,6 @@ ${message}`
       messageId: newMessage.id,
     })
   } catch (error) {
-    console.error("Contact form submission error:", error)
     return NextResponse.json({ error: "Failed to submit contact form" }, { status: 500 })
   }
 }

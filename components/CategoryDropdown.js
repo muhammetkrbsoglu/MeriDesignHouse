@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, memo } from "react"
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 
-export default function CategoryDropdown({ category, index, totalCategories, isScrolled }) {
+function CategoryDropdown({ category, index, totalCategories, isScrolled }) {
   const [isOpen, setIsOpen] = useState(false)
   const [hoveredPath, setHoveredPath] = useState([])
   const dropdownRef = useRef(null)
@@ -233,3 +233,6 @@ export default function CategoryDropdown({ category, index, totalCategories, isS
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(CategoryDropdown)

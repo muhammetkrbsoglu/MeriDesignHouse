@@ -15,7 +15,8 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { id } = params
+    // Await params in Next.js 15+
+    const { id } = await params
 
     // Get target user
     const targetUser = await prisma.user.findUnique({
@@ -37,29 +38,68 @@ export async function DELETE(request, { params }) {
       )
     }
 
-    console.log("Deleting user:", targetUser)
+    // Delete related records first to avoid foreign key constraint issues
+    await prisma.$transaction(async (tx) => {
+      // Delete user's messages (both sent and received)
+      await tx.message.deleteMany({
+        where: {
+          OR: [
+            { senderId: id },
+            { receiverId: id },
+          ],
+        },
+      })
 
-    // Delete from Clerk first
-    try {
-      await clerkClient.users.deleteUser(targetUser.clerkId)
-      console.log("User deleted from Clerk")
-    } catch (clerkError) {
-      console.error("Error deleting user from Clerk:", clerkError)
-      // Continue with database deletion even if Clerk fails
-    }
+      // Delete user's order requests
+      await tx.orderRequest.deleteMany({
+        where: { userId: id },
+      })
 
-    // Delete from database (this will cascade delete related records)
-    await prisma.user.delete({
-      where: { id },
+      // Delete user's orders
+      await tx.order.deleteMany({
+        where: { userId: id },
+      })
+
+      // Delete user's favorites
+      await tx.favorite.deleteMany({
+        where: { userId: id },
+      })
+
+      // Delete from Clerk (continue even if it fails)
+      if (targetUser.clerkId) {
+        try {
+          await clerkClient.users.deleteUser(targetUser.clerkId)
+          console.log(`Successfully deleted user from Clerk: ${targetUser.clerkId}`)
+        } catch (clerkError) {
+          console.error("Error deleting user from Clerk:", clerkError)
+          console.log(`Continuing with database deletion despite Clerk error for user: ${targetUser.clerkId}`)
+          // User might already be deleted from Clerk or doesn't exist, continue with database cleanup
+        }
+      }
+
+      // Finally delete the user
+      await tx.user.delete({
+        where: { id },
+      })
     })
-
-    console.log("User deleted from database")
 
     return NextResponse.json({
       message: "User deleted successfully",
     })
   } catch (error) {
     console.error("Error deleting user:", error)
-    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
+    console.error("Error details:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+      name: error.name,
+      userId: id
+    })
+    return NextResponse.json({ 
+      error: "Failed to delete user", 
+      details: error.message,
+      code: error.code || 'UNKNOWN_ERROR',
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, { status: 500 })
   }
 }

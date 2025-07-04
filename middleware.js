@@ -27,14 +27,7 @@ export default clerkMiddleware(async (auth, req) => {
     // Check all possible metadata locations for role
     const role = publicMetadata.role || privateMetadata.role || unsafeMetadata.role || sessionClaims?.role
 
-    console.log("Admin route middleware check:", {
-      userId,
-      publicMetadata: sessionClaims?.publicMetadata,
-      privateMetadata: sessionClaims?.privateMetadata,
-      metadata: sessionClaims?.metadata,
-      role: role,
-      url: req.url,
-    })
+
 
     // Allow access if user has admin role
     if (role === "admin") {
@@ -50,15 +43,13 @@ export default clerkMiddleware(async (auth, req) => {
       })
 
       if (user?.role === "admin") {
-        console.log("Admin access granted via database check")
         return NextResponse.next()
       }
     } catch (error) {
-      console.error("Database check failed:", error)
+      // Database check failed - silently continue to unauthorized redirect
     }
 
     // Redirect to unauthorized page for admin routes
-    console.log("Access denied - redirecting to unauthorized")
     return NextResponse.redirect(new URL("/unauthorized", req.url))
   }
 

@@ -5,10 +5,31 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
     "./lib/**/*.{js,jsx,ts,tsx}",
-    "./pages/**/*.{js,jsx,ts,tsx}",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./*.{js,ts,jsx,tsx,mdx}",
-    "*.{js,ts,jsx,tsx,mdx}",
+    // Remove unused patterns for better optimization
+    // "./pages/**/*.{js,jsx,ts,tsx}",
+    // "./src/**/*.{js,jsx,ts,tsx}",
+    // "./*.{js,ts,jsx,tsx,mdx}",
+    // "*.{js,ts,jsx,tsx,mdx}",
+  ],
+  // Enable JIT mode for faster builds
+  mode: 'jit',
+  // Safelist for dynamic classes that might be purged incorrectly
+  safelist: [
+    'text-yellow-600',
+    'bg-yellow-100',
+    'text-blue-600', 
+    'bg-blue-100',
+    'text-purple-600',
+    'bg-purple-100',
+    'text-green-600',
+    'bg-green-100',
+    'text-red-600',
+    'bg-red-100',
+    'border-yellow-200',
+    'border-blue-200',
+    'border-purple-200',
+    'border-green-200',
+    'border-red-200',
   ],
   theme: {
     extend: {

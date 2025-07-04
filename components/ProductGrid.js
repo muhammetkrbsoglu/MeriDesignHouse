@@ -1,6 +1,7 @@
+import { memo } from "react"
 import ProductCard from "./ProductCard"
 
-export default function ProductGrid({ products = [] }) {
+function ProductGrid({ products = [] }) {
   if (!products || products.length === 0) {
     return (
       <div className="text-center py-12">
@@ -19,3 +20,6 @@ export default function ProductGrid({ products = [] }) {
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(ProductGrid)

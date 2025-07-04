@@ -22,7 +22,6 @@ export default function CategoryForm({ category, onSubmit, onCancel }) {
         const response = await fetch("/api/admin/categories")
         if (response.ok) {
           const categories = await response.json()
-          console.log("All categories fetched:", categories)
           setAllCategories(categories)
         }
       } catch (error) {

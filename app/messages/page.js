@@ -6,10 +6,7 @@ import MessagesClient from "@/components/MessagesClient"
 export default async function MessagesPage({ searchParams }) {
   const { userId, sessionClaims } = await auth()
 
-  console.log("Messages page - userId:", userId)
-
   if (!userId) {
-    console.log("No userId, redirecting to sign-in")
     redirect("/sign-in")
   }
 
@@ -17,11 +14,8 @@ export default async function MessagesPage({ searchParams }) {
     where: { clerkId: userId },
   })
 
-  console.log("Current user from database:", currentUser)
-
   // If user doesn't exist in database, create them
   if (!currentUser) {
-    console.log("User not found in database, creating user...")
     
     try {
       const userData = sessionClaims || {}
@@ -41,7 +35,6 @@ export default async function MessagesPage({ searchParams }) {
         },
       })
       
-      console.log("User created successfully:", currentUser)
     } catch (error) {
       console.error("Error creating user:", error)
       redirect("/sign-in")
@@ -83,8 +76,8 @@ export default async function MessagesPage({ searchParams }) {
         content: message.content,
         createdAt: message.createdAt,
         read: message.read,
-        fromUserId: message.senderId,
-        toUserId: message.receiverId,
+        senderId: message.senderId,
+        receiverId: message.receiverId,
       })
     }
   })

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
@@ -8,6 +8,7 @@ import LoadingSpinner from "@/components/LoadingSpinner"
 import EmptyState from "@/components/EmptyState"
 import ProductCard from "@/components/ProductCard"
 import { Heart } from "lucide-react"
+import Link from "next/link"
 
 export default function FavoritesClient() {
   const [favorites, setFavorites] = useState([])
@@ -15,11 +16,7 @@ export default function FavoritesClient() {
   const [error, setError] = useState(null)
   const { toast } = useToast()
 
-  useEffect(() => {
-    loadFavorites()
-  }, [])
-
-  const loadFavorites = async () => {
+  const loadFavorites = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -34,7 +31,6 @@ export default function FavoritesClient() {
       const data = await response.json()
       setFavorites(data.products || [])
     } catch (error) {
-      console.error("Error fetching favorites:", error)
       setError(error.message)
       toast({
         title: "Hata",
@@ -44,7 +40,11 @@ export default function FavoritesClient() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    loadFavorites()
+  }, [loadFavorites])
 
   if (loading) {
     return (
@@ -79,7 +79,7 @@ export default function FavoritesClient() {
         description="Beğendiğiniz ürünleri favorilere ekleyerek daha sonra kolayca bulabilirsiniz."
         action={
           <Button asChild className="bg-pink-600 hover:bg-pink-700">
-            <a href="/">Ürünleri Keşfet</a>
+            <Link href="/">Ürünleri Keşfet</Link>
           </Button>
         }
       />

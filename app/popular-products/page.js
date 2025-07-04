@@ -20,7 +20,6 @@ async function getPopularProducts() {
       },
     })
 
-    console.log(`Found ${products.length} popular products`)
     return products
   } catch (error) {
     console.error("Error fetching popular products:", error)

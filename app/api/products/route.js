@@ -35,8 +35,6 @@ export async function GET(request) {
       where.isPopular = true
     }
 
-    console.log("Products API where clause:", where)
-
     // Get products with category information
     const [products, total] = await Promise.all([
       prisma.product.findMany({
@@ -58,8 +56,6 @@ export async function GET(request) {
       }),
       prisma.product.count({ where }),
     ])
-
-    console.log(`Found ${products.length} products for query:`, where)
 
     // Format products for consistent response
     const formattedProducts = products.map((product) => ({

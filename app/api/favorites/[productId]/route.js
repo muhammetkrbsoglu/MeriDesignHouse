@@ -10,7 +10,8 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 })
     }
 
-    const { productId } = params
+    // Await params in Next.js 15+
+    const { productId } = await params
 
     // Check if user exists in database
     const user = await prisma.user.findUnique({
@@ -52,7 +53,8 @@ export async function POST(request, { params }) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 })
     }
 
-    const { productId } = params
+    // Await params in Next.js 15+
+    const { productId } = await params
 
     // Get or create user
     let user = await prisma.user.findUnique({
@@ -111,7 +113,8 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 })
     }
 
-    const { productId } = params
+    // Await params in Next.js 15+
+    const { productId } = await params
 
     // Get user
     const user = await prisma.user.findUnique({

@@ -3,8 +3,20 @@
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import MyOrdersClient from "@/components/MyOrdersClient"
+import dynamic from "next/dynamic"
 import LoadingSpinner from "@/components/LoadingSpinner"
+
+// Dynamically import my orders client component
+const MyOrdersClient = dynamic(() => import("@/components/MyOrdersClient"), {
+  loading: () => (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading orders...</p>
+      </div>
+    </div>
+  )
+})
 
 export default function MyOrdersPage() {
   const { user, isLoaded } = useUser()

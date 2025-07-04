@@ -28,29 +28,28 @@ export async function GET(request) {
     const messages = await prisma.message.findMany({
       where: {
         OR: [
-          { fromUserId: currentUser.id, toUserId: otherUserId },
-          { fromUserId: otherUserId, toUserId: currentUser.id },
+          { senderId: currentUser.id, receiverId: otherUserId },
+          { senderId: otherUserId, receiverId: currentUser.id },
         ],
       },
       include: {
-        fromUser: true,
-        toUser: true,
+        sender: true,
+        receiver: true,
       },
       orderBy: { createdAt: "asc" },
     })
 
     await prisma.message.updateMany({
       where: {
-        fromUserId: otherUserId,
-        toUserId: currentUser.id,
-        isRead: false,
+        senderId: otherUserId,
+        receiverId: currentUser.id,
+        read: false,
       },
-      data: { isRead: true },
+      data: { read: true },
     })
 
     return NextResponse.json(messages)
   } catch (error) {
-    console.error("Error fetching messages:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

@@ -106,7 +106,7 @@ function transformCategoryData(category) {
       const item = {
         name: cat.name,
         slug: cat.slug,
-        count: cat.productCount || 0,
+        count: cat.totalProducts || cat._count?.products || 0, // Use totalProducts first, then fallback to _count.products
         level: depth
       }
       
@@ -117,7 +117,8 @@ function transformCategoryData(category) {
   }
   
   const subcategories = flattenSubcategories(category.children)
-  const totalProducts = subcategories.reduce((sum, item) => sum + item.count, 0) + (category.productCount || 0)
+  // API'den gelen totalProducts verisini kullan, yoksa _count.products kullan
+  const totalProducts = category.totalProducts || category._count?.products || 0
   
   return {
     name: category.name,
@@ -211,7 +212,6 @@ export default function KategorilerPage() {
                   alt={category.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    console.log(`Image failed to load: ${category.image}`)
                     e.target.src = "/images/crafting-hands.jpg"
                   }}
                 />

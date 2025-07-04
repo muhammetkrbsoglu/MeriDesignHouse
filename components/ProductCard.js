@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo, useCallback } from "react"
 import { useUser } from "@clerk/nextjs"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,28 +8,29 @@ import { Badge } from "@/components/ui/badge"
 import { Heart, ShoppingCart, Star, Sparkles } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { formatPrice, calculateDiscountPercentage, hasDiscount, getEffectivePrice } from "@/lib/priceUtils"
+import Image from "next/image"
 
-export default function ProductCard({ product, showAddToCart = true }) {
+function ProductCard({ product, showAddToCart = true }) {
   const { user } = useUser()
   const { toast } = useToast()
   const [isFavorite, setIsFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    if (user && product?.id) {
-      checkFavoriteStatus()
-    }
-  }, [user, product?.id])
-
-  const checkFavoriteStatus = async () => {
+  const checkFavoriteStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/favorites/check/${product.id}`)
       const data = await response.json()
       setIsFavorite(data.isFavorite)
     } catch (error) {
-      console.error("Error checking favorite status:", error)
+      // Handle error silently
     }
-  }
+  }, [product.id])
+
+  useEffect(() => {
+    if (user && product?.id) {
+      checkFavoriteStatus()
+    }
+  }, [user, product?.id, checkFavoriteStatus])
 
   const toggleFavorite = async (e) => {
     e.preventDefault()
@@ -102,9 +103,11 @@ export default function ProductCard({ product, showAddToCart = true }) {
       <div className="relative" onClick={handleCardClick}>
         {/* Product Image */}
         <div className="aspect-square overflow-hidden bg-gray-100">
-          <img
-            src={product.image || "/placeholder.svg?height=300&width=300"}
+          <Image
+            src={product.image || "/placeholder.svg"}
             alt={product.title}
+            width={300}
+            height={300}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           
@@ -192,3 +195,6 @@ export default function ProductCard({ product, showAddToCart = true }) {
     </Card>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(ProductCard)

@@ -63,10 +63,6 @@ export default function ImageGallery({ images = [], productName = "Ürün", size
     ),
   ]
 
-  console.log("ImageGallery received images:", images)
-  console.log("Valid images after processing:", validImages)
-  console.log("Final image URLs:", imageUrls)
-
   // Reset current index when images change
   useEffect(() => {
     if (imageUrls.length > 0 && currentIndex >= imageUrls.length) {

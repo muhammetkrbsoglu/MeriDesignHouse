@@ -20,7 +20,6 @@ async function getFeaturedProducts() {
       },
     })
 
-    console.log(`Found ${products.length} featured products`)
     return products
   } catch (error) {
     console.error("Error fetching featured products:", error)

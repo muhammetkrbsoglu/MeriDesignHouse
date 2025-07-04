@@ -1,11 +1,18 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export default function HeroBanner() {
   return (
     <section className="relative h-[500px] md:h-[600px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img src="/images/hero-background.jpg" alt="Wedding setup background" className="w-full h-full object-cover" />
+        <Image 
+          src="/images/hero-background.jpg" 
+          alt="Wedding setup background" 
+          fill
+          className="object-cover" 
+          priority
+        />
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
       </div>
 

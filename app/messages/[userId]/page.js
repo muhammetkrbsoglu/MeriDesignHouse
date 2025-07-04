@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import MessageThread from "@/components/messages/MessageThread"
 import MessageForm from "@/components/messages/MessageForm"
+import Link from "next/link"
 
 export default async function MessageThreadPage({ params }) {
   const { userId } = await auth()
@@ -71,7 +72,7 @@ export default async function MessageThreadPage({ params }) {
             <div className="bg-primary-50 px-6 py-4 border-b border-neutral-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <a
+                  <Link
                     href="/messages"
                     className="text-neutral-600 hover:text-neutral-800 transition-colors"
                     title="Back to messages"
@@ -79,7 +80,7 @@ export default async function MessageThreadPage({ params }) {
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                  </a>
+                  </Link>
                   <div>
                     <h1 className="text-xl font-semibold text-neutral-900">{otherUser.name}</h1>
                     <p className="text-sm text-neutral-600">{otherUser.email}</p>

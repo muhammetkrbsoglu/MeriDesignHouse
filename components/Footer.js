@@ -1,4 +1,54 @@
+"use client"
+
+import Link from "next/link"
+import { useState, useEffect } from "react"
+
 export default function Footer() {
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const fetchCategories = async () => {
+      if (!isMounted) return
+
+      try {
+        const response = await fetch("/api/categories/navbar", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        if (isMounted && data.success) {
+          // Only show first 4 categories in footer to keep it clean
+          setCategories(data.categories?.slice(0, 4) || [])
+        }
+      } catch (error) {
+        if (isMounted) {
+          setCategories([])
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchCategories()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -43,16 +93,6 @@ export default function Footer() {
                   İletişim
                 </a>
               </li>
-              <li>
-                <a href="/shipping" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  Kargo Bilgileri
-                </a>
-              </li>
-              <li>
-                <a href="/returns" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  İade ve Değişim
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -60,26 +100,22 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Kategoriler</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="/categories/evlilige-dair-hediyelikler" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  Düğün
-                </a>
-              </li>
-              <li>
-                <a href="/categories/dogum-gunu" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  Doğum Günü
-                </a>
-              </li>
-              <li>
-                <a href="/categories/yildonumu" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  Yıldönümü
-                </a>
-              </li>
-              <li>
-                <a href="/categories/nisan" className="text-gray-300 hover:text-pink-400 transition-colors">
-                  Nişan
-                </a>
-              </li>
+              {loading ? (
+                <li className="text-gray-300">Yükleniyor...</li>
+              ) : categories.length > 0 ? (
+                categories.map((category) => (
+                  <li key={category.id}>
+                    <Link 
+                      href={`/categories/${category.slug}`} 
+                      className="text-gray-300 hover:text-pink-400 transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-gray-300">Kategori bulunamadı</li>
+              )}
             </ul>
           </div>
         </div>
