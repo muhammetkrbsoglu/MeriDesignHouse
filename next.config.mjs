@@ -80,10 +80,20 @@ const nextConfig = {
       }
     }
     
+    // Prisma client externals
     config.externals.push({
       'utf-8-validate': 'commonjs utf-8-validate',
       'bufferutil': 'commonjs bufferutil',
     })
+
+    // Fix for Prisma in serverless environments
+    if (isServer) {
+      config.plugins.push(
+        new config.webpack.IgnorePlugin({
+          resourceRegExp: /^electron$/,
+        })
+      )
+    }
     
     return config
   },
