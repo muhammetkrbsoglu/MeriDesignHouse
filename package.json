@@ -20,7 +20,6 @@
     "db:push": "npx prisma db push"
   },
   "dependencies": {
-    "@clerk/clerk-sdk-node": "^5.1.6",
     "@clerk/nextjs": "^6.0.0",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",

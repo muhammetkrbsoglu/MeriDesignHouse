@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useUser } from "@clerk/nextjs"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -23,9 +23,9 @@ export default function ProductDetailPageClient({ product }) {
     if (user && product?.id) {
       checkFavoriteStatus()
     }
-  }, [user, product?.id])
+  }, [user, product?.id, checkFavoriteStatus])
 
-  const checkFavoriteStatus = async () => {
+  const checkFavoriteStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/favorites/check/${product.id}`)
       const data = await response.json()
@@ -33,7 +33,7 @@ export default function ProductDetailPageClient({ product }) {
     } catch (error) {
       console.error("Error checking favorite status:", error)
     }
-  }
+  }, [product.id])
 
   const toggleFavorite = async () => {
     if (!user) {
