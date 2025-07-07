@@ -113,9 +113,17 @@ export async function GET() {
         error: "Kategoriler yüklenemedi",
         categories: [],
       },
-      { status: 500 },
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      },
     )
   } finally {
     await prisma.$disconnect()
   }
 }
+
+// Add cache headers for successful responses too
+export const revalidate = 60; // Cache for 1 minute

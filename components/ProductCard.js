@@ -10,27 +10,16 @@ import { useToast } from "@/hooks/use-toast"
 import { formatPrice, calculateDiscountPercentage, hasDiscount, getEffectivePrice } from "@/lib/priceUtils"
 import Image from "next/image"
 
-function ProductCard({ product, showAddToCart = true }) {
+function ProductCard({ product, showAddToCart = true, isFavorite: initialIsFavorite = false, onFavoriteChange }) {
   const { user } = useUser()
   const { toast } = useToast()
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite)
   const [isLoading, setIsLoading] = useState(false)
 
-  const checkFavoriteStatus = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/favorites/check/${product.id}`)
-      const data = await response.json()
-      setIsFavorite(data.isFavorite)
-    } catch (error) {
-      // Handle error silently
-    }
-  }, [product.id])
-
+  // Update local state when prop changes
   useEffect(() => {
-    if (user && product?.id) {
-      checkFavoriteStatus()
-    }
-  }, [user, product?.id, checkFavoriteStatus])
+    setIsFavorite(initialIsFavorite)
+  }, [initialIsFavorite])
 
   const toggleFavorite = async (e) => {
     e.preventDefault()
@@ -55,10 +44,17 @@ function ProductCard({ product, showAddToCart = true }) {
       const data = await response.json()
 
       if (data.success) {
-        setIsFavorite(!isFavorite)
+        const newIsFavorite = !isFavorite
+        setIsFavorite(newIsFavorite)
+        
+        // Notify parent component if callback provided
+        if (onFavoriteChange) {
+          onFavoriteChange(product.id, newIsFavorite)
+        }
+        
         toast({
-          title: isFavorite ? "Favorilerden Çıkarıldı" : "Favorilere Eklendi",
-          description: isFavorite ? "Ürün favorilerinizden çıkarıldı." : "Ürün favorilerinize eklendi.",
+          title: newIsFavorite ? "Favorilere Eklendi" : "Favorilerden Çıkarıldı",
+          description: newIsFavorite ? "Ürün favorilerinize eklendi." : "Ürün favorilerinizden çıkarıldı.",
         })
       } else {
         toast({
