@@ -51,13 +51,13 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-gray-800 dark:bg-gray-950 text-white border-t dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-2xl font-bold text-pink-400 mb-4">MeriDesignHouse</h3>
-            <p className="text-gray-300 mb-4 leading-relaxed">
+            <p className="text-gray-300 dark:text-gray-400 mb-4 leading-relaxed">
               Özel anlarınız için güzel, el yapımı hediyeler yaratıyoruz. Her parça sevgi ve 
               detaylara gösterilen özenle üretilmiştir.
             </p>
@@ -108,15 +108,15 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Hızlı Bağlantılar</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Hızlı Bağlantılar</h4>
             <ul className="space-y-2">
               <li>
-                <a href="/about" className="text-gray-300 hover:text-pink-400 transition-colors">
+                <a href="/about" className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition-colors">
                   Hakkımızda
                 </a>
               </li>
               <li>
-                <a href="/contact" className="text-gray-300 hover:text-pink-400 transition-colors">
+                <a href="/contact" className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition-colors">
                   İletişim
                 </a>
               </li>
@@ -125,30 +125,30 @@ export default function Footer() {
 
           {/* Categories */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Kategoriler</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Kategoriler</h4>
             <ul className="space-y-2">
               {loading ? (
-                <li className="text-gray-300">Yükleniyor...</li>
+                <li className="text-gray-300 dark:text-gray-400">Yükleniyor...</li>
               ) : categories.length > 0 ? (
                 categories.map((category) => (
                   <li key={category.id}>
                     <Link 
                       href={`/categories/${category.slug}`} 
-                      className="text-gray-300 hover:text-pink-400 transition-colors"
+                      className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition-colors"
                     >
                       {category.name}
                     </Link>
                   </li>
                 ))
               ) : (
-                <li className="text-gray-300">Kategori bulunamadı</li>
+                <li className="text-gray-300 dark:text-gray-400">Kategori bulunamadı</li>
               )}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-400">&copy; 2025 MeriDesignHouse. Tüm hakları saklıdır.</p>
+        <div className="border-t border-gray-700 dark:border-gray-600 mt-8 pt-8 text-center">
+          <p className="text-gray-400 dark:text-gray-500">&copy; 2025 MeriDesignHouse. Tüm hakları saklıdır.</p>
         </div>
       </div>
     </footer>

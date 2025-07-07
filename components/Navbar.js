@@ -19,6 +19,7 @@ import Image from "next/image"
 import SearchBar from "./SearchBar"
 import MobileCategoryTree from "./MobileCategoryTree" // Import MobileCategoryTree
 import CategoryDropdown from "./CategoryDropdown" // Import CategoryDropdown
+import ThemeToggle from "./ThemeToggle"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -96,7 +97,7 @@ function Navbar() {
     <div className="sticky top-0 z-50">
       <Disclosure
         as="nav"
-        className={`bg-white shadow-sm border-b transition-all duration-300 ${isScrolled ? "shadow-lg" : ""}`}
+        className={`bg-white dark:bg-gray-900 shadow-sm border-b dark:border-gray-700 transition-all duration-300 ${isScrolled ? "shadow-lg" : ""}`}
       >
         {({ open }) => (
           <>
@@ -127,7 +128,7 @@ function Navbar() {
                       Meri
                     </span>
                     <span
-                      className={`font-semibold tracking-[0.15em] text-gray-600 uppercase transition-all duration-300 ${isScrolled ? "text-[8px]" : "text-[10px]"}`}
+                      className={`font-semibold tracking-[0.15em] text-gray-600 dark:text-gray-400 uppercase transition-all duration-300 ${isScrolled ? "text-[8px]" : "text-[10px]"}`}
                       style={{
                         fontFamily: "Inter, sans-serif",
                         marginTop: "-1px",
@@ -149,26 +150,26 @@ function Navbar() {
                 <div className="hidden md:flex items-center space-x-8">
                   <Link
                     href="/"
-                    className={`text-gray-700 hover:text-pink-600 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                    className={`text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                   >
                     Ana Sayfa
                   </Link>
                   <Link
                     href="/about"
-                    className={`text-gray-700 hover:text-pink-600 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                    className={`text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                   >
                     Hakkımızda
                   </Link>
                   <Link
                     href="/contact"
-                    className={`text-gray-700 hover:text-pink-600 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                    className={`text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                   >
                     İletişim
                   </Link>
                   {user && user.publicMetadata?.role !== "admin" && (
                     <Link
                       href="/my-orders"
-                      className={`flex items-center space-x-1 text-gray-700 hover:text-pink-600 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                      className={`flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                     >
                       <ShoppingBagIcon
                         className={`transition-all duration-300 ${isScrolled ? "h-4 w-4" : "h-5 w-5"}`}
@@ -180,12 +181,15 @@ function Navbar() {
                   {/* User Menu */}
                   {isLoaded && (
                     <div className="flex items-center space-x-4">
+                      {/* Theme Toggle */}
+                      <ThemeToggle />
+                      
                       {user ? (
                         <>
                           {user.publicMetadata?.role !== "admin" && (
                             <Link
                               href="/favorites"
-                              className={`flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                              className={`flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                             >
                               <HeartIcon
                                 className={`transition-all duration-300 ${isScrolled ? "h-4 w-4" : "h-5 w-5"}`}
@@ -195,7 +199,7 @@ function Navbar() {
                           )}
                           <Link
                             href="/messages"
-                            className={`flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                            className={`flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                           >
                             <ChatBubbleLeftIcon
                               className={`transition-all duration-300 ${isScrolled ? "h-4 w-4" : "h-5 w-5"}`}
@@ -205,7 +209,7 @@ function Navbar() {
                           {user.publicMetadata?.role === "admin" && (
                             <Link
                               href="/admin"
-                              className={`flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                              className={`flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                             >
                               <Cog6ToothIcon
                                 className={`transition-all duration-300 ${isScrolled ? "h-4 w-4" : "h-5 w-5"}`}
@@ -221,7 +225,7 @@ function Navbar() {
                         <div className="flex items-center space-x-3">
                           <Link
                             href="/sign-in"
-                            className={`text-gray-700 hover:text-pink-600 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
+                            className={`text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-all duration-300 ${isScrolled ? "text-sm" : "text-base"}`}
                           >
                             Giriş Yap
                           </Link>
@@ -238,15 +242,16 @@ function Navbar() {
                 </div>
 
                 {/* Mobile menu button */}
-                <div className="md:hidden">
-                  <Disclosure.Button className="text-gray-700 hover:text-pink-600 transition-colors">
+                <div className="md:hidden flex items-center space-x-2">
+                  <ThemeToggle />
+                  <Disclosure.Button className="text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
                     {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
                   </Disclosure.Button>
                 </div>
               </div>
 
               {/* Mobile Navigation */}
-              <Disclosure.Panel className="md:hidden border-t border-gray-200 py-4">
+              <Disclosure.Panel className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4 bg-white dark:bg-gray-900">
                 <div className="space-y-4">
                   <Link href="/" className="block text-gray-700 hover:text-pink-600 font-medium transition-colors">
                     Ana Sayfa
