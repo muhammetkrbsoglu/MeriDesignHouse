@@ -77,7 +77,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "@repo/ui": "link:../../packages/ui"
+    "@repo/ui": "file:../../packages/ui"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.0",
