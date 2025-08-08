@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useAuth } from "@clerk/nextjs"
 import CategoryForm from "./CategoryForm"
 
 export default function CategoryTable({ categories: initialCategories }) {
@@ -8,14 +9,17 @@ export default function CategoryTable({ categories: initialCategories }) {
   const [showForm, setShowForm] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { getToken } = useAuth()
 
   const handleDeleteCategory = async (categoryId) => {
     if (!confirm("Bu kategoriyi silmek istediğinizden emin misiniz?")) return
 
     setLoading(true)
     try {
-      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${categoryId}`, {
         method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
       if (response.ok) {

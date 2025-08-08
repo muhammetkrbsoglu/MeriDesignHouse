@@ -17,10 +17,11 @@ export default function MobileCategoryTree({ isOpen, onClose }) {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/categories/navbar")
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`)
       if (response.ok) {
         const data = await response.json()
-        setCategories(data)
+        const categoriesArray = Array.isArray(data) ? data : (data.categories || [])
+        setCategories(categoriesArray)
       }
     } catch (error) {
       console.error("Error fetching categories:", error)

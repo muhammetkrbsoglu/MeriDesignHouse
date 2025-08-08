@@ -7,9 +7,11 @@ import FormTextarea from "@/components/FormTextarea"
 import FormSelect from "@/components/FormSelect"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import ImageUpload from "@/components/admin/ImageUpload"
+import { useAuth } from "@clerk/nextjs"
 
 export default function AddProductForm({ categories }) {
   const router = useRouter()
+  const { getToken } = useAuth()
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -94,9 +96,10 @@ export default function AddProductForm({ categories }) {
     try {
       const { currentPrice, oldPrice, discount } = pricingData
 
-      const response = await fetch("/api/admin/products", {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({
           ...formData,
           price: currentPrice ? Number.parseFloat(currentPrice) : null,

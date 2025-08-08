@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Plus, Edit2, Trash2, Package, TrendingUp, FolderTree } from "lucide-react"
+import { useAuth } from "@clerk/nextjs"
 
 export default function CategoryManagement() {
   const [categories, setCategories] = useState([])
+  const { getToken } = useAuth()
   const [stats, setStats] = useState({ total: 0, totalProducts: 0, mostPopular: null })
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -18,7 +20,10 @@ export default function CategoryManagement() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/admin/categories")
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      })
 
       if (!response.ok) {
         const errorText = await response.text()
@@ -84,12 +89,15 @@ export default function CategoryManagement() {
     }
 
     try {
-      const url = editingCategory ? `/api/admin/categories/${editingCategory.id}` : "/api/admin/categories"
+      const url = editingCategory
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${editingCategory.id}`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`
       const method = editingCategory ? "PUT" : "POST"
 
+      const token = await getToken()
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(categoryData),
       })
 
@@ -124,8 +132,10 @@ export default function CategoryManagement() {
     if (!confirm("Bu kategoriyi silmek istediğinizden emin misiniz?")) return
 
     try {
-      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${categoryId}`, {
         method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
       if (response.ok) {

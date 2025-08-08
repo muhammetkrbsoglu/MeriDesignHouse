@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAuth } from "@clerk/nextjs"
 import FormInput from "@/components/FormInput"
 import FormTextarea from "@/components/FormTextarea"
 import FormSelect from "@/components/FormSelect"
@@ -16,11 +17,15 @@ export default function ProductForm({ product, onSubmit, onCancel }) {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const { getToken } = useAuth()
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/admin/categories")
+        const token = await getToken()
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
         if (response.ok) {
           const data = await response.json()
           setCategories(data)
@@ -64,12 +69,15 @@ export default function ProductForm({ product, onSubmit, onCancel }) {
     setLoading(true)
 
     try {
-      const url = product ? `/api/admin/products/${product.id}` : "/api/admin/products"
+      const url = product
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${product.id}`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product`
       const method = product ? "PUT" : "POST"
 
+      const token = await getToken()
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(formData),
       })
 

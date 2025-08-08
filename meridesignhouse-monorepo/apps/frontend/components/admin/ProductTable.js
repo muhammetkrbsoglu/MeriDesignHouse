@@ -2,20 +2,24 @@
 
 import { useState } from "react"
 import ProductForm from "./ProductForm"
+import { useAuth } from "@clerk/nextjs"
 
 export default function ProductTable({ products: initialProducts }) {
   const [products, setProducts] = useState(initialProducts)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { getToken } = useAuth()
 
   const handleDeleteProduct = async (productId) => {
     if (!confirm("Bu ürünü silmek istediğinizden emin misiniz?")) return
 
     setLoading(true)
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${productId}`, {
         method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
       if (response.ok) {

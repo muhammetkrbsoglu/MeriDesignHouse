@@ -15,7 +15,7 @@ export default function Footer() {
       if (!isMounted) return
 
       try {
-        const response = await fetch("/api/categories/navbar", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

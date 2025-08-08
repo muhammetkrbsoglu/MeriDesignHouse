@@ -1,17 +1,21 @@
 "use client"
 
 import { useState } from "react"
+import { useAuth } from "@clerk/nextjs"
 
 export default function ProductGrid({ products, viewMode, onEdit, onDelete }) {
   const [loading, setLoading] = useState(false)
+  const { getToken } = useAuth()
 
   const handleDelete = async (productId) => {
     if (!confirm("Are you sure you want to delete this product?")) return
 
     setLoading(true)
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${productId}`, {
         method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
       if (response.ok) {
@@ -29,9 +33,10 @@ export default function ProductGrid({ products, viewMode, onEdit, onDelete }) {
   const toggleFeatured = async (productId, currentFeatured) => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${productId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ featured: !currentFeatured }),
       })
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAuth } from "@clerk/nextjs"
 import FormInput from "@/components/FormInput"
 import FormTextarea from "@/components/FormTextarea"
 import LoadingSpinner from "@/components/LoadingSpinner"
@@ -15,11 +16,15 @@ export default function CategoryForm({ category, onSubmit, onCancel }) {
   const [allCategories, setAllCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const { getToken } = useAuth()
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/admin/categories")
+        const token = await getToken()
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
         if (response.ok) {
           const categories = await response.json()
           setAllCategories(categories)
@@ -124,12 +129,15 @@ export default function CategoryForm({ category, onSubmit, onCancel }) {
     setLoading(true)
 
     try {
-      const url = category ? `/api/admin/categories/${category.id}` : "/api/admin/categories"
+      const url = category
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${category.id}`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`
       const method = category ? "PUT" : "POST"
 
+      const token = await getToken()
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({
           ...formData,
           parentId: formData.parentId || null,

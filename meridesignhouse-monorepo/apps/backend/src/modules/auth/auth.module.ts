@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD, Reflector } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { UserModule } from '../user/user.module';
+import { RolesGuard } from './roles.guard';
 
 @Module({
   imports: [UserModule],
@@ -10,6 +11,10 @@ import { UserModule } from '../user/user.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

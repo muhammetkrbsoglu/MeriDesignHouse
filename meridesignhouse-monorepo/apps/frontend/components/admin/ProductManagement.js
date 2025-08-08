@@ -1,12 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import { useAuth } from "@clerk/nextjs"
 import Link from "next/link"
 
 export default function ProductManagement({ products = [], categories = [], stats = {} }) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
   const [sortBy, setSortBy] = useState("newest")
+  const { getToken } = useAuth()
 
   // Filter products
   const filteredProducts = products.filter((product) => {
@@ -35,8 +37,10 @@ export default function ProductManagement({ products = [], categories = [], stat
     if (!confirm("Bu ürünü silmek istediğinizden emin misiniz?")) return
 
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${productId}`, {
         method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
       if (response.ok) {

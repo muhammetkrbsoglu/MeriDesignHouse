@@ -57,7 +57,7 @@ function Navbar() {
       try {
         setLoading(true)
 
-        const response = await fetch("/api/categories/navbar", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -69,9 +69,9 @@ function Navbar() {
         }
 
         const data = await response.json()
-
-        if (isMounted && data.success) {
-          setCategories(data.categories || [])
+        const categoriesArray = Array.isArray(data) ? data : (data.categories || [])
+        if (isMounted) {
+          setCategories(categoriesArray)
           setLoading(false)
         }
       } catch (error) {

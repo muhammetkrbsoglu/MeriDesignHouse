@@ -78,7 +78,7 @@ const categoryStyles = {
 // API'den kategorileri çek
 async function getCategories() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'}/api/categories/navbar`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`, {
       cache: 'no-store' // Her zaman fresh data
     })
     
@@ -138,7 +138,7 @@ export default function KategorilerPage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch('/api/categories')
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`)
         const data = await response.json()
         
         if (data.success && data.categories.length > 0) {

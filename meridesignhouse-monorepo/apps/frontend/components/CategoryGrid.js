@@ -19,7 +19,7 @@ function CategoryGrid() {
       setLoading(true)
       setError(null)
 
-      const response = await fetch("/api/categories/navbar")
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/navbar`)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
