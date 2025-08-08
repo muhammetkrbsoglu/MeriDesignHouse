@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 import bundleAnalyzer from '@next/bundle-analyzer'
+import path from 'node:path'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -42,6 +43,13 @@ const nextConfig = {
       }
     }
     config.externals.push({ 'utf-8-validate': 'commonjs utf-8-validate', bufferutil: 'commonjs bufferutil' })
+
+    // Resolve shared UI package directly from source in monorepo
+    config.resolve = config.resolve || {}
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      ['@repo/ui']: path.resolve(__dirname, '../../packages/ui/src'),
+    }
     return config
   },
 }

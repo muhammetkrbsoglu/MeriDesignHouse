@@ -1,20 +1,42 @@
-/* Rewrites imports like "@repo/ui/button" to "@repo/ui" across apps/frontend */
+/*
+  Rewrites imports like "@repo/ui/button" to "@repo/ui" across apps/frontend.
+  Assumes named exports are available from @repo/ui/src/index.ts
+*/
 const fs = require('fs');
 const path = require('path');
+
 const root = path.join(process.cwd(), 'apps', 'frontend');
-const exts = new Set(['.js','.jsx','.ts','.tsx']);
-let count = 0;
-function walk(dir){
-  for(const e of fs.readdirSync(dir,{withFileTypes:true})){
-    const p = path.join(dir,e.name);
-    if(e.isDirectory()) walk(p);
-    else if(exts.has(path.extname(e.name))){
-      const s = fs.readFileSync(p,'utf8');
-      const s2 = s.replace(/from\s+(["'`])@repo\/ui\/[A-Za-z0-9_.-]+\1/g, 'from $1@repo/ui$1');
-      if(s!==s2){ fs.writeFileSync(p,s2); console.log('updated', path.relative(root,p)); count++; }
+const allowedExtensions = new Set(['.js', '.jsx', '.ts', '.tsx']);
+let updatedCount = 0;
+
+function rewriteFile(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const replaced = content.replace(/from\s+(["'`])@repo\/ui\/[A-Za-z0-9_-]+\1/g, 'from $1@repo/ui$1');
+  if (replaced !== content) {
+    fs.writeFileSync(filePath, replaced);
+    updatedCount += 1;
+    process.stdout.write(`updated ${path.relative(root, filePath)}\n`);
+  }
+}
+
+function walk(dirPath) {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      walk(fullPath);
+    } else if (allowedExtensions.has(path.extname(entry.name))) {
+      rewriteFile(fullPath);
     }
   }
 }
-if(!fs.existsSync(root)){ console.error('frontend not found:', root); process.exit(1); }
+
+if (!fs.existsSync(root)) {
+  console.error('Frontend path not found:', root);
+  process.exit(1);
+}
+
 walk(root);
-console.log('Done. Files updated:', count);
+console.log(`Done. Files updated: ${updatedCount}`);
+
+

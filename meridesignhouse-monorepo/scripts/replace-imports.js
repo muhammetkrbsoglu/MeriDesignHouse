@@ -37,3 +37,5 @@ if (!fs.existsSync(root)) {
 
 walk(root);
 console.log(`Done. Files updated: ${updatedCount}`);
+
+
