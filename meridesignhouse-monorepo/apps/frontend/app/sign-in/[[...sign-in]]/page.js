@@ -1,4 +1,5 @@
 import { SignIn } from "@clerk/nextjs"
+import { clerkTheme } from "../../../lib/clerkTheme"
 
 export default function SignInPage() {
   return (
@@ -9,16 +10,7 @@ export default function SignInPage() {
           <p className="text-neutral-600">Hesabınıza giriş yapın</p>
         </div>
         <div className="bg-white rounded-2xl shadow-lg p-8">
-          <SignIn
-            appearance={{
-              elements: {
-                formButtonPrimary: "bg-primary-600 hover:bg-primary-700 text-white",
-                card: "shadow-none",
-                headerTitle: "hidden",
-                headerSubtitle: "hidden",
-              },
-            }}
-          />
+          <SignIn appearance={clerkTheme} />
         </div>
       </div>
     </div>

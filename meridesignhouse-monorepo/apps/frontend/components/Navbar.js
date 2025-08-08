@@ -20,6 +20,7 @@ import SearchBar from "./SearchBar"
 import MobileCategoryTree from "./MobileCategoryTree" // Import MobileCategoryTree
 import CategoryDropdown from "./CategoryDropdown" // Import CategoryDropdown
 import ThemeToggle from "./ThemeToggle"
+import { clerkTheme } from "../lib/clerkTheme"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -218,7 +219,7 @@ function Navbar() {
                             </Link>
                           )}
                           <div className={`transition-all duration-300 ${isScrolled ? "scale-90" : "scale-100"}`}>
-                            <UserButton afterSignOutUrl="/" />
+                            <UserButton appearance={clerkTheme} afterSignOutUrl="/" />
                           </div>
                         </>
                       ) : (
@@ -312,7 +313,7 @@ function Navbar() {
                             </Link>
                           )}
                           <div className="pt-2">
-                            <UserButton afterSignOutUrl="/" />
+                             <UserButton appearance={clerkTheme} afterSignOutUrl="/" />
                           </div>
                         </div>
                       ) : (

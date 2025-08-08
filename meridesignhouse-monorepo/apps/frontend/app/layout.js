@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
+import { clerkTheme } from "../lib/clerkTheme"
 import { Toaster } from "sonner"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ThemeProvider } from "next-themes"
@@ -18,7 +19,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={clerkTheme}>
       <html lang="tr" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider
