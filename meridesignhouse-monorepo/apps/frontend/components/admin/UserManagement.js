@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAuth } from "@clerk/nextjs"
 import { Button } from "@repo/ui"
 import { Input } from "@repo/ui"
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui"
@@ -10,6 +11,7 @@ import { Search, UserPlus, Shield, ShieldOff, Trash2, RefreshCw } from "lucide-r
 import { toast } from "@/hooks/use-toast"
 
 export default function UserManagement() {
+  const { getToken } = useAuth()
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
@@ -28,7 +30,10 @@ export default function UserManagement() {
         limit: "10",
       })
 
-      const response = await fetch(`/api/admin/users?${params}`)
+      const token = await getToken()
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/users?${params.toString()}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      })
       if (!response.ok) {
         throw new Error("Kullanıcılar yüklenemedi")
       }

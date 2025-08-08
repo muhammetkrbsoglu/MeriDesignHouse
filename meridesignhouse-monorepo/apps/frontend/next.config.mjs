@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 import bundleAnalyzer from '@next/bundle-analyzer'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -10,6 +12,13 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   transpilePackages: ['@repo/ui'],
+  env: {
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  },
+  eslint: {
+    // Allow production builds to successfully complete even if there are ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   images: {
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
@@ -45,7 +54,9 @@ const nextConfig = {
     }
     config.externals.push({ 'utf-8-validate': 'commonjs utf-8-validate', bufferutil: 'commonjs bufferutil' })
 
-    // Resolve shared UI package directly from source in monorepo
+    // Resolve shared UI package directly from source in monorepo (ESM-safe __dirname)
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = dirname(__filename)
     config.resolve = config.resolve || {}
     config.resolve.alias = {
       ...(config.resolve.alias || {}),

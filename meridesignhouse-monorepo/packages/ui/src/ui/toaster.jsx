@@ -4,7 +4,13 @@ import * as React from "react"
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
 
 import { cn } from "@/lib/utils"
-import { toggleVariants } from "@/components/ui/toggle"
+// Inline minimal toggleVariants to remove dependency on missing toggle module
+const toggleVariants = ({ variant, size } = {}) => {
+  const base = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+  const variants = variant === "outline" ? "border border-input bg-background hover:bg-accent hover:text-accent-foreground" : "bg-primary text-primary-foreground hover:bg-primary/90";
+  const sizes = size === "sm" ? "h-8 px-3" : size === "lg" ? "h-12 px-6" : "h-10 px-4 py-2";
+  return [base, variants, sizes].join(" ");
+}
 
 const ToggleGroupContext = React.createContext({
   size: "default",
