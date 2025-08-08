@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "@clerk/nextjs"
+import { apiClient } from "@/lib/apiClient"
 import FormInput from "@/components/FormInput"
 import FormTextarea from "@/components/FormTextarea"
 import FormSelect from "@/components/FormSelect"
@@ -23,13 +24,8 @@ export default function ProductForm({ product, onSubmit, onCancel }) {
     const fetchCategories = async () => {
       try {
         const token = await getToken()
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        })
-        if (response.ok) {
-          const data = await response.json()
-          setCategories(data)
-        }
+        const data = await apiClient(`/category`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+        setCategories(data)
       } catch (error) {
         console.error("Error fetching categories:", error)
       }
@@ -69,25 +65,16 @@ export default function ProductForm({ product, onSubmit, onCancel }) {
     setLoading(true)
 
     try {
-      const url = product
-        ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${product.id}`
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product`
+      const url = product ? `/product/${product.id}` : `/product`
       const method = product ? "PUT" : "POST"
 
       const token = await getToken()
-      const response = await fetch(url, {
+      const savedProduct = await apiClient(url, {
         method,
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(formData),
       })
-
-      if (response.ok) {
-        const savedProduct = await response.json()
-        onSubmit(savedProduct)
-      } else {
-        const errorData = await response.json()
-        setErrors({ submit: errorData.error || "Ürün kaydedilemedi" })
-      }
+      onSubmit(savedProduct)
     } catch (error) {
       setErrors({ submit: "Ağ hatası. Lütfen tekrar deneyin." })
     }

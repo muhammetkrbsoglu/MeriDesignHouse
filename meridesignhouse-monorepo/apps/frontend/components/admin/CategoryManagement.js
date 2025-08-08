@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Plus, Edit2, Trash2, Package, TrendingUp, FolderTree } from "lucide-react"
 import { useAuth } from "@clerk/nextjs"
+import { apiClient } from "@/lib/apiClient"
 
 export default function CategoryManagement() {
   const [categories, setCategories] = useState([])
@@ -21,16 +22,7 @@ export default function CategoryManagement() {
   const fetchCategories = async () => {
     try {
       const token = await getToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`HTTP ${response.status}: ${errorText}`)
-      }
-
-      const data = await response.json()
+      const data = await apiClient(`/category`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
 
       if (Array.isArray(data)) {
         setCategories(data)
@@ -89,28 +81,23 @@ export default function CategoryManagement() {
     }
 
     try {
-      const url = editingCategory
-        ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${editingCategory.id}`
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category`
+      const url = editingCategory ? `/category/${editingCategory.id}` : `/category`
       const method = editingCategory ? "PUT" : "POST"
 
       const token = await getToken()
-      const response = await fetch(url, {
+      const response = await apiClient(url, {
         method,
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(categoryData),
       })
 
-      if (response.ok) {
+      if (response) {
         setMessage(editingCategory ? "Kategori başarıyla güncellendi!" : "Kategori başarıyla eklendi!")
         setShowForm(false)
         setEditingCategory(null)
         setFormData({ name: "", slug: "", description: "", parentId: "" })
         fetchCategories()
         setTimeout(() => setMessage(""), 3000)
-      } else {
-        const error = await response.json()
-        setMessage(error.error || "Bir hata oluştu")
       }
     } catch (error) {
       setMessage("Kategori kaydedilirken hata oluştu")
@@ -133,18 +120,15 @@ export default function CategoryManagement() {
 
     try {
       const token = await getToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/category/${categoryId}`, {
+      await apiClient(`/category/${categoryId}`, {
         method: "DELETE",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
-      if (response.ok) {
+      {
         setMessage("Kategori başarıyla silindi!")
         fetchCategories()
         setTimeout(() => setMessage(""), 3000)
-      } else {
-        const error = await response.json()
-        setMessage(error.error || "Kategori silinirken hata oluştu")
       }
     } catch (error) {
       setMessage("Kategori silinirken hata oluştu")

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useAuth } from "@clerk/nextjs"
+import { apiClient } from "@/lib/apiClient"
 import Link from "next/link"
 
 export default function ProductManagement({ products = [], categories = [], stats = {} }) {
@@ -38,15 +39,13 @@ export default function ProductManagement({ products = [], categories = [], stat
 
     try {
       const token = await getToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${productId}`, {
+      await apiClient(`/product/${productId}`, {
         method: "DELETE",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 
-      if (response.ok) {
+      {
         window.location.reload()
-      } else {
-        alert("Ürün silinirken hata oluştu")
       }
     } catch (error) {
       console.error("Delete error:", error)

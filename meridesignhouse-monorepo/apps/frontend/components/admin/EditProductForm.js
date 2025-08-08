@@ -8,6 +8,7 @@ import FormSelect from "@/components/FormSelect"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import ImageUpload from "@/components/admin/ImageUpload"
 import { useAuth } from "@clerk/nextjs"
+import { apiClient } from "@/lib/apiClient"
 
 export default function EditProductForm({ product, categories }) {
   const router = useRouter()
@@ -97,9 +98,9 @@ export default function EditProductForm({ product, categories }) {
       const { currentPrice, oldPrice, discount } = pricingData
 
       const token = await getToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/product/${product.id}`, {
+      await apiClient(`/product/${product.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({
           ...formData,
           price: currentPrice ? Number.parseFloat(currentPrice) : null,
@@ -111,13 +112,7 @@ export default function EditProductForm({ product, categories }) {
           })),
         }),
       })
-
-      if (response.ok) {
-        router.push("/admin/products")
-      } else {
-        const errorData = await response.json()
-        setErrors({ submit: errorData.error || "Ürün güncellenemedi" })
-      }
+      router.push("/admin/products")
     } catch (error) {
       setErrors({ submit: "Ağ hatası. Lütfen tekrar deneyin." })
     }
