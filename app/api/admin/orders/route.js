@@ -131,7 +131,7 @@ export async function PUT(request) {
 
     const updateData = {}
     if (status) updateData.status = status
-    if (adminNotes !== undefined) updateData.adminNotes = adminNotes
+    if (adminNotes !== undefined) updateData.adminNotes = adminNotes || "" // Fallback to empty string
 
     const updatedOrder = await prisma.orderRequest.update({
       where: { id: orderId },

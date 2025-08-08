@@ -33,6 +33,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        fast: "150ms",
+        medium: "300ms",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -91,11 +91,13 @@ export async function PATCH(request, { params }) {
     const { id } = await params
     const body = await request.json()
 
+    console.log("Updating adminNotes:", body.adminNotes);
+
     const updatedOrder = await prisma.orderRequest.update({
       where: { id },
       data: {
         ...(body.status && { status: body.status }),
-        ...(body.adminNote !== undefined && { adminNote: body.adminNote }),
+        ...(body.adminNotes !== undefined && { adminNotes: body.adminNotes }),
         ...(body.deliveryOption && { deliveryOption: body.deliveryOption }),
         ...(body.urgency && { urgency: body.urgency }),
         ...(body.estimatedDelivery && { estimatedDelivery: new Date(body.estimatedDelivery) }),
@@ -121,6 +123,8 @@ export async function PATCH(request, { params }) {
         },
       },
     })
+
+    console.log("Updated order:", updatedOrder);
 
     return NextResponse.json(updatedOrder)
   } catch (error) {

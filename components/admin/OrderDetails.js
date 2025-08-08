@@ -122,10 +122,13 @@ export default function OrderDetails({ order }) {
   const handleNotesUpdate = async () => {
     try {
       setUpdating(true)
+      const notesToSend = adminNotes || "" // Fallback to empty string
+      console.log("Admin Notes before API call:", notesToSend) // Debugging log
+
       const response = await fetch(`/api/admin/orders/${order.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adminNotes }),
+        body: JSON.stringify({ adminNote: notesToSend }),
       })
 
       if (response.ok) {
@@ -390,7 +393,9 @@ export default function OrderDetails({ order }) {
                       size="sm"
                       onClick={() => {
                         setIsEditing(false)
-                        setAdminNotes(currentOrder.adminNotes || "")
+                        if (!isEditing) {
+                          setAdminNotes(currentOrder.adminNotes || "")
+                        }
                       }}
                     >
                       <X className="h-4 w-4" />
@@ -403,7 +408,11 @@ export default function OrderDetails({ order }) {
               {isEditing ? (
                 <Textarea
                   value={adminNotes}
-                  onChange={(e) => setAdminNotes(e.target.value)}
+                  onChange={(e) => {
+                    const newValue = e.target.value
+                    console.log("Textarea value:", newValue) // Debugging log
+                    setAdminNotes(newValue)
+                  }}
                   placeholder="Admin notlarını buraya yazın..."
                   rows={4}
                 />
