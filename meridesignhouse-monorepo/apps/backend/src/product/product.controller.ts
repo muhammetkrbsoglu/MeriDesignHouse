@@ -2,14 +2,16 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 import { ProductService } from './product.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { Public } from '../auth/public.decorator';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  @Public()
   list(
     @Query('page') pageRaw?: string,
     @Query('limit') limitRaw?: string,
@@ -30,8 +32,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  @Public()
   getById(@Param('id') id: string) {
     return this.productService.getById(id);
   }
@@ -39,14 +40,14 @@ export class ProductController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles('admin')
-  create(@Body() body: any) {
+  create(@Body() body: CreateProductDto) {
     return this.productService.create(body);
   }
 
   @Put(':id')
   @UseGuards(RolesGuard)
   @Roles('admin')
-  update(@Param('id') id: string, @Body() body: any) {
+  update(@Param('id') id: string, @Body() body: UpdateProductDto) {
     return this.productService.update(id, body);
   }
 

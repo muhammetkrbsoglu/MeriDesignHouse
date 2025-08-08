@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { Public } from '../auth/public.decorator';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -13,6 +15,13 @@ export class CategoryController {
   @Roles('admin')
   findAll() {
     return this.categoryService.findAll();
+  }
+
+  @Get(':id')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  findOne(@Param('id') id: string) {
+    return this.categoryService.findOne(id);
   }
 
   @Get('navbar')
@@ -36,17 +45,14 @@ export class CategoryController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles('admin')
-  create(
-    @Body()
-    body: { name: string; slug?: string; description?: string | null; parentId?: string | null },
-  ) {
+  create(@Body() body: CreateCategoryDto) {
     return this.categoryService.create(body);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(RolesGuard)
   @Roles('admin')
-  update(@Param('id') id: string, @Body() body: { name?: string; slug?: string }) {
+  update(@Param('id') id: string, @Body() body: UpdateCategoryDto) {
     return this.categoryService.update(id, body);
   }
 

@@ -1,5 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -37,7 +39,7 @@ export class CategoryService {
     return slug;
   }
 
-  async create(input: { name: string; slug?: string; description?: string | null; parentId?: string | null }) {
+  async create(input: CreateCategoryDto) {
     const finalSlug = this.generateSlug(input.name, input.slug);
 
     const existing = await this.prismaService.category.findUnique({ where: { slug: finalSlug } });
@@ -67,16 +69,29 @@ export class CategoryService {
     });
   }
 
-  async update(id: string, input: { name?: string; slug?: string }) {
+  async update(id: string, input: UpdateCategoryDto) {
     try {
       return await this.prismaService.category.update({
         where: { id },
-        data: { name: input.name, slug: input.slug },
+        data: { name: input.name, slug: input.slug, description: input.description ?? undefined, parentId: input.parentId ?? undefined },
         include: { _count: { select: { products: true } } },
       });
     } catch (e) {
       throw new NotFoundException('Kategori bulunamadı');
     }
+  }
+
+  async findOne(id: string) {
+    const category = await this.prismaService.category.findUnique({
+      where: { id },
+      include: {
+        parent: true,
+        children: true,
+        _count: { select: { products: true, children: true } },
+      },
+    });
+    if (!category) throw new NotFoundException('Kategori bulunamadı');
+    return category;
   }
 
   async remove(id: string) {

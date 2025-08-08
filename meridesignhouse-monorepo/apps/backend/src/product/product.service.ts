@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -67,7 +69,7 @@ export class ProductService {
     return product;
   }
 
-  async create(input: any) {
+  async create(input: CreateProductDto) {
     const { additionalImages, categoryId, ...productData } = input;
     const result = await this.prismaService.$transaction(async (tx) => {
       const createData: any = { ...productData };
@@ -85,7 +87,7 @@ export class ProductService {
     return result;
   }
 
-  async update(id: string, input: any) {
+  async update(id: string, input: UpdateProductDto) {
     const data = {
       title: input.title,
       description: input.description,
