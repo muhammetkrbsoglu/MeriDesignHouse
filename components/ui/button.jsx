@@ -20,7 +20,7 @@ const buttonVariants = {
 
 const getButtonClasses = ({ variant = "default", size = "default", className }) => {
   const baseClasses =
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors transition-transform duration-fast hover:scale-[1.03] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
   const variantClasses = buttonVariants.variant[variant] || buttonVariants.variant.default
   const sizeClasses = buttonVariants.size[size] || buttonVariants.size.default
 

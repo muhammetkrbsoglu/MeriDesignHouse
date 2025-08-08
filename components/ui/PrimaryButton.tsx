@@ -14,7 +14,7 @@ export const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonPr
       <Button
         ref={ref}
         className={cn(
-          "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 transition-transform duration-fast hover:scale-[1.02] active:scale-[0.98]",
+          "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800",
           className
         )}
         {...rest}
