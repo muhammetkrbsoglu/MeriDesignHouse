@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@repo/ui": ["../../packages/ui/src/index.tsx"],
+      "@repo/ui/*": ["../../packages/ui/src/*"]
     }
   }
 }

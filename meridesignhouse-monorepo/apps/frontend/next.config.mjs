@@ -23,10 +23,11 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@heroicons/react'],
+    externalDir: true,
   },
   turbopack: {
     rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' } },
-    resolveAlias: { '@': './' },
+    resolveAlias: { '@': './', '@repo/ui': '../../packages/ui/src' },
   },
   serverExternalPackages: ['@prisma/client'],
   webpack: (config, { dev, isServer }) => {
