@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id // Clerk ID - no default
+  email       String   @unique
+  firstName   String
+  lastName    String
+  phoneNumber String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  addresses        Address[]
+  orders          Order[]
+  messages        Message[]
+  feedbacks       CustomerFeedback[]
+  wishlistItems   WishlistItem[]
+  cartItems       CartItem[]
+
+  @@map("users")
+}
+
+// GuestUser model removed - using only User model for cart management
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  parentId    String?
+  imageUrl    String?
+  description String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Self-referencing relation for hierarchical categories
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+
+  // Relations
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                String   @id @default(cuid())
+  name              String
+  description       String
+  price             Decimal  @db.Decimal(10, 2)
+  discountPrice     Decimal? @db.Decimal(10, 2)
+  discountPercentage Decimal? @db.Decimal(5, 2)
+  stockQuantity     Int      @default(0)
+  images            String[]
+  categoryId        String
+  isFeatured        Boolean  @default(false)
+  isActive          Boolean  @default(true)
+  tags              String[]
+  dimensions        String?
+  weight            String?
+  material          String?
+  careInstructions  String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  category      Category           @relation(fields: [categoryId], references: [id])
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
+  cartItems     CartItem[]
+  feedbacks     CustomerFeedback[]
+
+  @@map("products")
+}
+
+model Address {
+  id           String  @id @default(cuid())
+  userId       String? // Made optional for guest users
+  title        String  // Ev, İş, vb.
+  firstName    String
+  lastName     String
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String
+  postalCode   String
+  country      String  @default("Türkiye")
+  phoneNumber  String?
+  isDefault    Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user           User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shippingOrders Order[]  @relation("ShippingAddress")
+  billingOrders  Order[]  @relation("BillingAddress")
+
+  @@map("addresses")
+}
+
+model Order {
+  id                 String   @id @default(cuid())
+  userId             String?
+  status             OrderStatus @default(PENDING)
+  totalAmount        Decimal  @db.Decimal(10, 2)
+  adminNote          String?
+  customerNote       String?
+  shippingAddressId  String
+  billingAddressId   String
+  whatsappRedirected Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  user            User?      @relation(fields: [userId], references: [id])
+  shippingAddress Address    @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress  Address   @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  orderItems      OrderItem[]
+  messages        Message[]
+  feedbacks       CustomerFeedback[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+  designData Json?   // Custom design data for personalized products
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  orderId   String
+  userId    String?
+  content   String
+  isAdmin   Boolean  @default(false)
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id])
+
+  @@map("messages")
+}
+
+model DesignTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  thumbnail   String?
+  elements    Json     // Design elements configuration
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("design_templates")
+}
+
+model CustomerFeedback {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String?
+  orderId   String?
+  rating    Int      // 1-5 rating
+  comment   String?
+  imageUrl  String?
+  isFeatured Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id])
+  order   Order?  @relation(fields: [orderId], references: [id])
+
+  @@map("customer_feedbacks")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model CartItem {
+  id         String   @id @default(cuid())
+  userId     String?
+  productId  String
+  quantity   Int
+  designData Json?    // Custom design data
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}

@@ -1,0 +1,74 @@
+{
+  "name": "meridesignhouse",
+  "version": "1.0.0",
+  "description": "Modern, mobil uyumlu ve kullanıcı dostu düğün hediyeleri e-ticaret web sitesi",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "ngrok": "ngrok http 3001",
+    "build": "npm run build --workspaces",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "test": "npm run test --workspaces",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:backend": "npm run test --workspace=backend",
+    "test:e2e": "npm run test:e2e --workspaces",
+    "test:e2e:frontend": "npm run test:e2e --workspace=frontend",
+    "test:e2e:backend": "npm run test:e2e --workspace=backend",
+    "lint": "npm run lint --workspaces",
+    "lint:frontend": "npm run lint --workspace=frontend",
+    "lint:backend": "npm run lint --workspace=backend",
+    "format": "npm run format --workspaces",
+    "format:frontend": "npm run format --workspace=frontend",
+    "format:backend": "npm run format --workspace=backend",
+    "clean": "npm run clean --workspaces",
+    "clean:frontend": "npm run clean --workspace=frontend",
+    "clean:backend": "npm run clean --workspace=backend",
+    "install:all": "npm install && npm install --workspace=frontend && npm install --workspace=backend && npm install --workspace=shared",
+    "db:generate": "npm run db:generate --workspace=backend",
+    "db:migrate": "npm run db:migrate --workspace=backend",
+    "db:seed": "npm run db:seed --workspace=backend",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "ngrok": "^5.0.0-beta.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "e-commerce",
+    "wedding-gifts",
+    "nextjs",
+    "nestjs",
+    "typescript",
+    "tailwindcss",
+    "prisma",
+    "supabase"
+  ],
+  "author": "MeriDesignHouse",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/meridesignhouse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/meridesignhouse/issues"
+  },
+  "homepage": "https://github.com/your-username/meridesignhouse#readme",
+  "dependencies": {
+    "svix": "^1.74.1"
+  }
+}

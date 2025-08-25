@@ -1,0 +1,45 @@
+# MeriDesignHouse Proje Geliştirme Kuralları
+
+## Temel Kurallar
+1. **Project.md Tek Kaynak**: Project.md'deki tüm başlıklar, teknoloji stack, özellikler ve tasarım prensipleri tek kaynak referansıdır
+2. **Kısıtlı Geliştirme**: Kullanıcı "evet" veya "güncelle" diyene kadar yeni özellik önerilmeyecek ve eklenmeyecek
+3. **Checklist Zorunluluğu**: Her işin başında checklist çıkarılacak ve ilerledikçe güncellenecek
+4. **İlerleme Raporu**: Her adımda yapılacaklar listesi, mevcut ilerleme durumu ve sıradaki adım rapor edilecek
+5. **Odaklanma**: Gereksiz sohbet veya öneri yerine sadece proje ilerlemesine odaklanılacak
+
+## Teknoloji Stack Kısıtlamaları
+- **Frontend**: Sadece Next.js (latest), TypeScript, Tailwind CSS (latest)
+- **Backend**: Sadece NestJS (latest), TypeScript
+- **Veritabanı**: Sadece Supabase PostgreSQL, Prisma ORM (latest)
+- **Kimlik Doğrulama**: Sadece Clerk (latest)
+- **Medya Yönetimi**: Sadece ImageKit
+- **Durum Yönetimi**: Sadece Zustand (latest)
+- **Test**: Sadece Jest (latest), Playwright (latest)
+- **Deployment**: Sadece Vercel
+- **Analitik**: Sadece Microsoft Clarity
+- **Animasyon**: Sadece Framer Motion (latest)
+
+## Özellik Kısıtlamaları
+- Sadece Project.md'de tanımlı özellikler geliştirilecek
+- Ek özellikler eklenmeyecek
+- Mevcut özellikler değiştirilmeyecek (kullanıcı onayı olmadan)
+
+## Tasarım Kısıtlamaları
+- Sadece belirtilen renk paleti kullanılacak
+- Sadece belirtilen tipografi kuralları uygulanacak
+- Sadece belirtilen animasyon teknikleri kullanılacak
+- WCAG 2.1 AA standartları zorunlu
+
+## Geliştirme Süreci
+1. Her faz için checklist oluşturulacak
+2. Her adımda ilerleme raporu verilecek
+3. Sadece onaylanan değişiklikler yapılacak
+4. Proje dokümantasyonu güncel tutulacak
+
+## ⚠️ **Önemli Hatırlatmalar**
+### **Clerk Webhook Kurulumu**
+- **Unutulmamalı**: Clerk webhook kurulumu real-time user sync için kritik
+- **Şu anki durum**: Manuel sync ile çalışıyor (çalışır ama yavaş)
+- **Gelecekte eklenmeli**: Daha iyi performance ve real-time updates için
+- **ROADMAP.md'de işaretli**: Faz 2'de "SONRA EKLENECEK" olarak not edildi
+- **Faydaları**: Otomatik user sync, real-time updates, better UX

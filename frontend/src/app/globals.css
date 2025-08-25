@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gradient-pink: #F8C8DC;
+  --gradient-lavender: #D8B4FE;
+  --gradient-purple: #C4A7E7;
+  --gradient-blue: #A28D75;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-gradient-pink via-gradient-lavender to-gradient-purple text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1;
+  }
+  
+  .btn-secondary {
+    @apply bg-white border-2 border-primary-accent text-primary-accent px-6 py-3 rounded-lg font-medium hover:bg-primary-accent hover:text-white transition-all duration-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-gradient-pink via-gradient-lavender to-gradient-purple bg-clip-text text-transparent;
+  }
+  
+  /* Responsive utilities */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Mobile-first responsive grid */
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Responsive text sizes */
+  .text-responsive-xl {
+    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  .text-responsive-md {
+    @apply text-base md:text-lg;
+  }
+  
+  /* Responsive spacing */
+  .py-responsive {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+  
+  .px-responsive {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Responsive image containers */
+  .image-container-responsive {
+    @apply relative w-full h-48 sm:h-64 md:h-80 lg:h-96;
+  }
+  
+  /* Responsive button sizes */
+  .btn-responsive {
+    @apply px-4 py-2 md:px-6 md:py-3 text-sm md:text-base;
+  }
+  
+  /* Responsive card layouts */
+  .card-responsive {
+    @apply p-4 md:p-6 lg:p-8;
+  }
+  
+  /* Responsive navigation */
+  .nav-responsive {
+    @apply hidden md:flex;
+  }
+  
+  .nav-mobile {
+    @apply md:hidden;
+  }
+  
+  /* Responsive sidebar */
+  .sidebar-responsive {
+    @apply w-full md:w-64 lg:w-80;
+  }
+  
+  /* Responsive table */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+  
+  /* Responsive form */
+  .form-responsive {
+    @apply space-y-4 md:space-y-6;
+  }
+  
+  .form-grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6;
+  }
+  
+  /* Responsive modal */
+  .modal-responsive {
+    @apply w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto;
+  }
+  
+  /* Responsive hero section */
+  .hero-responsive {
+    @apply py-12 md:py-20 lg:py-24;
+  }
+  
+  .hero-text-responsive {
+    @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+  }
+  
+  /* Responsive product grid */
+  .product-grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6;
+  }
+  
+  /* Responsive category layout */
+  .category-layout-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8;
+  }
+  
+  /* Responsive admin dashboard */
+  .dashboard-grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Responsive cart layout */
+  .cart-layout-responsive {
+    @apply grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8;
+  }
+  
+  /* Responsive checkout form */
+  .checkout-form-responsive {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8;
+  }
+  
+  /* Responsive product detail */
+  .product-detail-responsive {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8;
+  }
+  
+  /* Responsive image gallery */
+  .gallery-responsive {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4;
+  }
+  
+  /* Responsive breadcrumb */
+  .breadcrumb-responsive {
+    @apply text-sm md:text-base;
+  }
+  
+  /* Responsive status badges */
+  .badge-responsive {
+    @apply text-xs md:text-sm px-2 md:px-3 py-1 md:py-2;
+  }
+  
+  /* Responsive loading states */
+  .loading-responsive {
+    @apply h-16 w-16 md:h-24 md:w-24 lg:h-32 lg:w-32;
+  }
+  
+  /* Responsive error states */
+  .error-responsive {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  /* Responsive empty states */
+  .empty-responsive {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+  
+  /* Responsive search bar */
+  .search-responsive {
+    @apply w-full md:w-80 lg:w-96;
+  }
+  
+  /* Responsive filters */
+  .filters-responsive {
+    @apply w-full md:w-64 lg:w-80;
+  }
+  
+  /* Responsive pagination */
+  .pagination-responsive {
+    @apply flex flex-wrap justify-center gap-2 md:gap-4;
+  }
+  
+  /* Responsive tooltips */
+  .tooltip-responsive {
+    @apply text-xs md:text-sm;
+  }
+  
+  /* Responsive notifications */
+  .notification-responsive {
+    @apply text-sm md:text-base;
+  }
+  
+  /* Responsive progress bars */
+  .progress-responsive {
+    @apply h-2 md:h-3 lg:h-4;
+  }
+  
+  /* Responsive tabs */
+  .tabs-responsive {
+    @apply flex flex-col md:flex-row;
+  }
+  
+  /* Responsive accordion */
+  .accordion-responsive {
+    @apply space-y-2 md:space-y-4;
+  }
+  
+  /* Responsive carousel */
+  .carousel-responsive {
+    @apply w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl;
+  }
+  
+  /* Responsive timeline */
+  .timeline-responsive {
+    @apply space-y-4 md:space-y-6;
+  }
+  
+  /* Responsive stats */
+  .stats-responsive {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  /* Responsive charts */
+  .chart-responsive {
+    @apply h-48 md:h-64 lg:h-80 xl:h-96;
+  }
+  
+  /* Responsive maps */
+  .map-responsive {
+    @apply h-64 md:h-80 lg:h-96 xl:h-[500px];
+  }
+  
+  /* Responsive video */
+  .video-responsive {
+    @apply aspect-video w-full;
+  }
+  
+  /* Responsive audio */
+  .audio-responsive {
+    @apply w-full max-w-md md:max-w-lg;
+  }
+  
+  /* Responsive file upload */
+  .upload-responsive {
+    @apply w-full max-w-xs md:max-w-sm lg:max-w-md;
+  }
+  
+  /* Responsive calendar */
+  .calendar-responsive {
+    @apply w-full max-w-sm md:max-w-md lg:max-w-lg;
+  }
+  
+  /* Responsive chat */
+  .chat-responsive {
+    @apply h-96 md:h-[500px] lg:h-[600px];
+  }
+  
+  /* Responsive kanban */
+  .kanban-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Responsive data table */
+  .datatable-responsive {
+    @apply min-w-full overflow-x-auto;
+  }
+  
+  /* Responsive form validation */
+  .validation-responsive {
+    @apply text-xs md:text-sm;
+  }
+  
+  /* Responsive help text */
+  .help-responsive {
+    @apply text-xs md:text-sm;
+  }
+  
+  /* Responsive success/error messages */
+  .message-responsive {
+    @apply text-sm md:text-base;
+  }
+  
+  /* Responsive icons */
+  .icon-responsive {
+    @apply w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6;
+  }
+  
+  /* Responsive avatars */
+  .avatar-responsive {
+    @apply w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12;
+  }
+  
+  /* Responsive logos */
+  .logo-responsive {
+    @apply w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10;
+  }
+  
+  /* Responsive thumbnails */
+  .thumbnail-responsive {
+    @apply w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24;
+  }
+  
+  /* Responsive preview images */
+  .preview-responsive {
+    @apply w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32;
+  }
+}
