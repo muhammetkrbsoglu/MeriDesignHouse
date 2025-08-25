@@ -52,7 +52,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
   initializeGuestCart: () => {
     if (isClient()) {
       const guestCart = readGuestCart();
-      console.debug('[cart.store] initializeGuestCart', guestCart);
       set(guestCart);
     }
   },
@@ -63,7 +62,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
       
       if (!token) {
         // Guest cart: localStorage'a yaz
-        console.debug('[cart.store] addItem guest flow', data);
         const current = readGuestCart();
         const existingIndex = current.items.findIndex(i => i.productId === data.productId);
         if (existingIndex >= 0) {
@@ -76,7 +74,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
           const { total, itemCount } = computeCartTotals(updatedItems);
           const nextCart: Cart = { items: updatedItems, total, itemCount };
           writeGuestCart(nextCart);
-          console.debug('[cart.store] addItem guest updated existing item', nextCart);
           set(nextCart);
         } else {
           // Fetch product details so UI shows correct name/price in guest cart
@@ -104,7 +101,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
           const { total, itemCount } = computeCartTotals(updatedItems);
           const nextCart: Cart = { items: updatedItems, total, itemCount };
           writeGuestCart(nextCart);
-          console.debug('[cart.store] addItem guest added new item', nextCart);
           set(nextCart);
         }
         return;
@@ -171,13 +167,11 @@ export const useCartStore = create<CartState>()((set, get) => ({
       
       if (!token) {
         // Guest cart update
-        console.debug('[cart.store] updateItem guest flow', { itemId, data });
         const current = readGuestCart();
         const updatedItems = current.items.map(i => i.id === itemId ? { ...i, quantity: data.quantity, updatedAt: new Date() as any } : i);
         const { total, itemCount } = computeCartTotals(updatedItems);
         const nextCart: Cart = { items: updatedItems, total, itemCount };
         writeGuestCart(nextCart);
-        console.debug('[cart.store] updateItem guest result', nextCart);
         set(nextCart);
         return;
       }
@@ -218,13 +212,11 @@ export const useCartStore = create<CartState>()((set, get) => ({
       
       if (!token) {
         // Guest cart remove
-        console.debug('[cart.store] removeItem guest flow', { itemId });
         const current = readGuestCart();
         const updatedItems = current.items.filter(i => i.id !== itemId);
         const { total, itemCount } = computeCartTotals(updatedItems);
         const nextCart: Cart = { items: updatedItems, total, itemCount };
         writeGuestCart(nextCart);
-        console.debug('[cart.store] removeItem guest result', nextCart);
         set(nextCart);
         return;
       }
@@ -263,7 +255,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
       
       if (!token) {
         // Guest cart clear
-        console.debug('[cart.store] clearCart guest flow');
         writeGuestCart({ items: [], total: 0, itemCount: 0 });
         set({ items: [], total: 0, itemCount: 0 });
         return;
@@ -292,7 +283,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
       
       if (!token) {
         // Misafir: localStorage'dan yükle
-        console.debug('[cart.store] loadCart guest flow');
         const guestCart = readGuestCart();
         set(guestCart);
         return;
@@ -364,13 +354,10 @@ export const useCartStore = create<CartState>()((set, get) => ({
   // Merge guest cart to user cart after sign-in
   mergeGuestCartToUser: async (token: string) => {
     const guest = readGuestCart();
-    console.debug('[cart.store] mergeGuestCartToUser start', guest);
     if (!guest.items.length) return;
     for (const item of guest.items) {
       try {
-        console.debug('[cart.store] merge POST /cart item', { productId: item.productId, quantity: item.quantity });
         await CartService.addToCart(token, { productId: item.productId, quantity: item.quantity, designData: item.designData });
-        console.debug('[cart.store] merge success for', { productId: item.productId });
       } catch (e) {
         console.warn('Guest merge failed for item', item.productId, e);
         // continue with other items
@@ -378,7 +365,6 @@ export const useCartStore = create<CartState>()((set, get) => ({
     }
     // Clean guest cart and refresh from server
     writeGuestCart({ items: [], total: 0, itemCount: 0 });
-    console.debug('[cart.store] merge complete, guest cart cleared');
     // Refresh cart from server
     set({ items: [], total: 0, itemCount: 0 });
   },

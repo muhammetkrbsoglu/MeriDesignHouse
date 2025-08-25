@@ -4,8 +4,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export class CartService {
   private static async makeRequest<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const url = `${API_BASE_URL}/api${endpoint}`;
-    const response = await fetch(url, {
+    const response = await fetch(`${API_BASE_URL}/api${endpoint}`, {
       ...options,
       cache: 'no-store',
       headers: {
@@ -15,19 +14,8 @@ export class CartService {
     });
 
     if (!response.ok) {
-      let bodyText: string | undefined;
-      try {
-        bodyText = await response.text();
-      } catch {}
-      console.warn('[CartService] Request failed', {
-        url,
-        status: response.status,
-        statusText: response.statusText,
-        body: bodyText,
-      });
-      let parsed: any = undefined;
-      try { parsed = bodyText ? JSON.parse(bodyText) : undefined; } catch {}
-      throw new Error((parsed && parsed.message) || `HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
