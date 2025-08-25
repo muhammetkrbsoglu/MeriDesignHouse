@@ -9,6 +9,7 @@ import { useWishlistStore } from '../../../stores/wishlist.store';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { calculatePriceInfo, formatPrice } from '../../../utils/price.utils';
+import { useToast, ToastContainer } from '../../../components/ToastNotification';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -26,6 +27,7 @@ export default function ProductDetailPage() {
   // Store hooks
   const { addItem } = useCartStore();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
+  const toast = useToast();
 
   useEffect(() => {
     if (productId) {
@@ -90,12 +92,20 @@ export default function ProductDetailPage() {
     try {
       setAddingToWishlist(true);
       
+      // Get token if available
+      let token: string | null = null;
+      try {
+        const { getToken } = await import('@clerk/nextjs');
+        const tokenApi: any = getToken as any;
+        token = (tokenApi && typeof tokenApi === 'function') ? await (tokenApi as any)() : null;
+      } catch {}
+      
       if (isInWishlist(product.id)) {
-        await removeFromWishlist(product.id);
-        alert('Ürün favorilerden çıkarıldı.');
+        await removeFromWishlist(product.id, token as any);
+        toast.showSuccess('Favorilerden Çıkarıldı', `${product.name} favorilerden çıkarıldı.`);
       } else {
-        await addToWishlist(product);
-        alert('Ürün favorilere eklendi!');
+        await addToWishlist(product, token as any);
+        toast.showSuccess('Favorilere Eklendi! ❤️', `${product.name} favorilere başarıyla eklendi.`);
       }
     } catch (error) {
       console.error('Failed to toggle wishlist:', error);
@@ -139,7 +149,12 @@ export default function ProductDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <>
+      <ToastContainer
+        notifications={toast.notifications}
+        onClose={toast.removeToast}
+      />
+      <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
@@ -459,5 +474,6 @@ export default function ProductDetailPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

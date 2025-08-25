@@ -4,6 +4,7 @@ import { Product } from '../../../shared/types/product';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '../stores/cart.store';
+import { useWishlistStore } from '../stores/wishlist.store';
 import { useToast, ToastContainer } from './ToastNotification';
 import { useState } from 'react';
 import { calculatePriceInfo, formatPrice } from '../utils/price.utils';
@@ -18,8 +19,10 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
   const router = useRouter();
   const { getToken } = useAuth();
   const { addItem } = useCartStore();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
   const toast = useToast();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
   const handleClick = () => {
     router.push(`/products/${product.id}`);
@@ -162,8 +165,36 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
                    >
                      {isAddingToCart ? 'Ekleniyor...' : 'Sepete Ekle'}
                    </button>
-                   <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm transition-colors">
-                     ❤️
+                   <button 
+                     onClick={async (e) => {
+                       e.stopPropagation();
+                       try {
+                         setIsTogglingWishlist(true);
+                         const token = await getToken();
+                         
+                         if (isInWishlist(product.id)) {
+                           await removeFromWishlist(product.id, token);
+                           toast.showSuccess('Favorilerden Çıkarıldı', `${product.name} favorilerden çıkarıldı.`);
+                         } else {
+                           await addToWishlist(product, token);
+                           toast.showSuccess('Favorilere Eklendi! ❤️', `${product.name} favorilere başarıyla eklendi.`);
+                         }
+                       } catch (error) {
+                         console.error('Failed to toggle wishlist:', error);
+                         toast.showError('Favori Hatası', 'Favori işlemi sırasında bir hata oluştu.');
+                       } finally {
+                         setIsTogglingWishlist(false);
+                       }
+                     }}
+                     disabled={isTogglingWishlist}
+                     className={`p-2 rounded text-sm transition-colors ${
+                       isInWishlist(product.id)
+                         ? 'bg-red-100 hover:bg-red-200 text-red-600 border border-red-300'
+                         : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300'
+                     }`}
+                     title={isInWishlist(product.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'}
+                   >
+                     {isTogglingWishlist ? '...' : isInWishlist(product.id) ? '❤️' : '🤍'}
                    </button>
                  </div>
         </div>
